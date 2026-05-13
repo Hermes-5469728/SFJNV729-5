@@ -124,6 +124,82 @@ const MODAL_CONTENT = {
     title: 'EAV 事实模型 · 零幻觉核验',
     sub: 'Entity-Attribute-Value 三元组模型',
     desc: '知识表示为 (实体, 属性, 值) 三元组。用确定性规则抽取 EAV，判断语义极性，与锚点库比对。发现矛盾时直接拦截输出，实现零幻觉的事实核验。'
+  },
+
+  /* 数据库表 */
+  'db-experts': {
+    title: 'ac_experts · 专家注册表',
+    sub: '24 个专家，按 L/T/M/A 分类，P1-P5 优先级',
+    desc: '存储所有注册专家的元数据。包括名称、分类、触发词、角色定义、规则约束。Dispatch 模块通过 trigger_words 匹配查询，按 priority 排序选取 Top 2 返回。'
+  },
+  'db-schedule': {
+    title: 'ac_schedule_log · 调度日志',
+    sub: '11 条调度记录',
+    desc: '记录每次 dispatch 的完整调用链。含 session_id、查询哈希、匹配的专家名、响应模式。用于调度审计和性能分析。'
+  },
+  'db-governance': {
+    title: 'ac_governance_log · 治理审计日志',
+    sub: '14 条记录，全部通过',
+    desc: '治理管道的完整审计轨迹。记录每次治理检查的通过状态、错误详情、修正次数、编码修复事件。是系统可信度的核心证据链。'
+  },
+  'db-truth': {
+    title: 'ac_truth · 真值知识库',
+    sub: '90 条已验证知识，7 个分类',
+    desc: '存储经过 L5 验证的确定性知识。Case Center 与此表双向同步，治理管道的 semantic check 以此为锚点进行事实比对。'
+  },
+  'db-taskgraphs': {
+    title: 'task_graphs · 编排任务图',
+    sub: 'Orchestrator 任务持久化',
+    desc: '存储 Orchestrator 的多轮编排任务图。含完整 PlanSteps、Agent 池、HITL 队列、执行指标。支持任务断点恢复和事后审计。'
+  },
+  'db-migration': {
+    title: 'migration_history · 迁移审计',
+    sub: '2 次迁移，版本 v1 → v2',
+    desc: '数据库 schema 版本管理和迁移审计。每次 DDL 变更必须走 migration 脚本，记录版本号、变更名称、执行时间、成功状态。违反此流程的修改会被拦截。'
+  },
+
+  /* 架构层 */
+  'arch-l0': {
+    title: 'L0 编码层',
+    sub: '输入清洗与编码修复 · 治理管道的第一道防线',
+    desc: '在输入进入核心流水线之前进行编码清洗：U+FFFD 替换字符检测、GBK→UTF-8 字节流恢复、stdin/stdout 代码页重配置。确保后续所有处理在正确的编码基础上进行。'
+  },
+  'arch-dispatch': {
+    title: 'D · Dispatch 调度引擎',
+    sub: '专家匹配 · 优先级排序 · 案例检索',
+    desc: '将用户输入与 24 个专家的 trigger_words 进行匹配。按 P1(安全) > P2(权益) > P3(心理) > P4(技术) > P5(通用) 排序，选取前 2 个返回。同时检索 Case Center 的相似案例辅助决策。'
+  },
+  'arch-orchestrator': {
+    title: 'S · Orchestrator 编排引擎',
+    sub: '13 态状态机 · 五阶段循环 · HITL 人在回路',
+    desc: '多轮规划循环引擎，按 PLAN→EXECUTE→VERIFY→RESOLVE→LOG 五阶段运行。13 态任务状态机管理每一步生命周期，支持依赖树调度、异步并行执行、HITL 中断、自动重试与回滚。'
+  },
+  'arch-gov': {
+    title: 'Q · Governance Pipeline',
+    sub: '多层检查 · 自动修正 · 协同治理',
+    desc: '质量安全层。encoding/syntax/semantic/security 四道检查依次过滤各类错误，未通过项交由 corrector ×3 自动修正。上层协同治理提供契约验证、风险评估、资源锁管理。'
+  },
+
+  /* 架构侧边栏 */
+  'arch-anchor': {
+    title: 'Anchor Engine · 锚点引擎',
+    sub: 'EAV 事实核验 · 确定性规则 · 零幻觉',
+    desc: '纯规则 EAV 抽取引擎，从文本提取 (实体, 属性, 值) 三元组。配合极性检测（positive/negative）和锚点库 JSON 比对，发现事实矛盾时直接硬拦截。'
+  },
+  'arch-case': {
+    title: 'Case Center · 案例中心',
+    sub: '失败捕获 → ChromaDB 检索 → 真值同步',
+    desc: '治理失败时自动捕获案例（query+command+error），存入 ChromaDB 向量库。后续调度前检索相似案例避免重复失败。与 ac_truth 真值表双向同步。'
+  },
+  'arch-collab': {
+    title: 'Collaborative Governor · 协同治理',
+    sub: '契约验证 · 风险评估 · 资源锁 · 端到端验证',
+    desc: '多 Agent 协作时的治理协调层。提供 agent 输出的契约校验、高风险操作拦截、资源竞争锁管理、以及完整的任务完成验证流程。'
+  },
+  'arch-db': {
+    title: 'ac_platform.db · 统一数据底座',
+    sub: 'SQLite · 6 张核心表 · Schema 版本控制',
+    desc: '单文件 SQLite 数据库，集中存储专家注册表、调度日志、治理审计、真值知识、任务图、迁移历史。所有模块共享同一数据源，确保数据一致性和可审计性。'
   }
 };
 

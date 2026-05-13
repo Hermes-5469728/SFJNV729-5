@@ -218,27 +218,27 @@
           <h3 class="phil-heading">💾 数据库设计 · ac_platform.db</h3>
           <p class="phil-db-intro">SQLite 单文件数据库，六张核心表构成完整的平台数据底座：</p>
           <div class="db-schema">
-            <div class="db-table db-table-primary">
+            <div class="db-table db-table-primary" data-modal="db-experts">
               <div class="db-table-name">ac_experts</div>
               <div class="db-table-desc">专家注册与匹配</div>
             </div>
-            <div class="db-table db-table-secondary">
+            <div class="db-table db-table-secondary" data-modal="db-schedule">
               <div class="db-table-name">ac_schedule_log</div>
               <div class="db-table-desc">调度日志</div>
             </div>
-            <div class="db-table db-table-secondary">
+            <div class="db-table db-table-secondary" data-modal="db-governance">
               <div class="db-table-name">ac_governance_log</div>
               <div class="db-table-desc">治理审计日志</div>
             </div>
-            <div class="db-table db-table-secondary">
+            <div class="db-table db-table-secondary" data-modal="db-truth">
               <div class="db-table-name">ac_truth</div>
               <div class="db-table-desc">已验证知识库</div>
             </div>
-            <div class="db-table db-table-secondary">
+            <div class="db-table db-table-secondary" data-modal="db-taskgraphs">
               <div class="db-table-name">task_graphs</div>
               <div class="db-table-desc">编排任务图</div>
             </div>
-            <div class="db-table db-table-secondary">
+            <div class="db-table db-table-secondary" data-modal="db-migration">
               <div class="db-table-name">migration_history</div>
               <div class="db-table-desc">Schema 迁移审计</div>
             </div>
@@ -273,27 +273,27 @@
               <div class="arch-label">用户输入</div>
               <div class="arch-arrow">↓</div>
             </div>
-            <div class="arch-layer arch-l0">
+            <div class="arch-layer arch-l0" data-modal="arch-l0">
               <div class="arch-layer-title">L0 编码层</div>
               <p class="arch-layer-desc">输入清洗与编码修复</p>
               <div class="arch-arrow">↓</div>
             </div>
             <div class="arch-split">
               <div class="arch-branch">
-                <div class="arch-layer arch-dispatch">
+                <div class="arch-layer arch-dispatch" data-modal="arch-dispatch">
                   <div class="arch-layer-title">D · Dispatch</div>
                   <p class="arch-layer-desc">专家匹配与调度</p>
                 </div>
               </div>
               <div class="arch-branch">
-                <div class="arch-layer arch-annotate">
+                <div class="arch-layer arch-annotate" data-modal="arch-orchestrator">
                   <div class="arch-layer-title">S · Orchestrator</div>
                   <p class="arch-layer-desc">多轮编排与任务管理</p>
                 </div>
               </div>
             </div>
             <div class="arch-arrow">↓</div>
-            <div class="arch-layer arch-gov">
+            <div class="arch-layer arch-gov" data-modal="arch-gov">
               <div class="arch-layer-title">Q · Governance Pipeline</div>
               <p class="arch-layer-desc">多层检查 · 自动修正 · 协同治理</p>
               <div class="arch-arrow">↓</div>
@@ -303,28 +303,28 @@
             </div>
           </div>
           <div class="arch-sidebar">
-            <div class="arch-sidebar-item">
+            <div class="arch-sidebar-item" data-modal="arch-anchor">
               <div class="arch-sidebar-icon">🧠</div>
               <div class="arch-sidebar-text">
                 <strong>Anchor Engine</strong>
                 <span>事实核验</span>
               </div>
             </div>
-            <div class="arch-sidebar-item">
+            <div class="arch-sidebar-item" data-modal="arch-case">
               <div class="arch-sidebar-icon">📚</div>
               <div class="arch-sidebar-text">
                 <strong>Case Center</strong>
                 <span>经验学习 & 检索</span>
               </div>
             </div>
-            <div class="arch-sidebar-item">
+            <div class="arch-sidebar-item" data-modal="arch-collab">
               <div class="arch-sidebar-icon">🔒</div>
               <div class="arch-sidebar-text">
                 <strong>Collaborative Gov</strong>
                 <span>契约验证 & 资源锁</span>
               </div>
             </div>
-            <div class="arch-sidebar-item">
+            <div class="arch-sidebar-item" data-modal="arch-db">
               <div class="arch-sidebar-icon">💾</div>
               <div class="arch-sidebar-text">
                 <strong>ac_platform.db</strong>
