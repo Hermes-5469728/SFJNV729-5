@@ -104,7 +104,7 @@
         <div class="works-category">
           <div class="works-category-badge">⛳ 1 · 核心平台</div>
           <div class="works-grid">
-            <div class="work-card work-card-core">
+            <div class="work-card work-card-core" data-modal="ac-platform">
               <div class="work-thumb work-thumb-core">
                 <div class="work-placeholder">AC</div>
               </div>
@@ -114,7 +114,7 @@
                 <div class="work-tags">
                   <span>Python</span><span>架构设计</span><span>NLP</span><span>状态机</span><span>EAV</span>
                 </div>
-                <a href="#ac-arch" class="work-link">架构详情 →</a>
+                <span class="work-link">点击查看架构 →</span>
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@
         <div class="works-category">
           <div class="works-category-badge">🧩 N · 独立模块</div>
           <div class="works-grid">
-            <div class="work-card">
+            <div class="work-card" data-modal="orchestrator">
               <div class="work-thumb work-thumb-n">
                 <div class="work-placeholder">Orch</div>
               </div>
@@ -133,9 +133,10 @@
                 <div class="work-tags">
                   <span>异步</span><span>状态机</span><span>Python</span>
                 </div>
+                <span class="work-link">点击查看架构 →</span>
               </div>
             </div>
-            <div class="work-card">
+            <div class="work-card" data-modal="governance">
               <div class="work-thumb work-thumb-n">
                 <div class="work-placeholder">Gov</div>
               </div>
@@ -145,9 +146,10 @@
                 <div class="work-tags">
                   <span>安全</span><span>验证</span><span>EAV</span>
                 </div>
+                <span class="work-link">点击查看架构 →</span>
               </div>
             </div>
-            <div class="work-card">
+            <div class="work-card" data-modal="anchor-engine">
               <div class="work-thumb work-thumb-n">
                 <div class="work-placeholder">Anchor</div>
               </div>
@@ -157,9 +159,10 @@
                 <div class="work-tags">
                   <span>EAV</span><span>NLP</span><span>规则引擎</span>
                 </div>
+                <span class="work-link">点击查看架构 →</span>
               </div>
             </div>
-            <div class="work-card">
+            <div class="work-card" data-modal="case-center">
               <div class="work-thumb work-thumb-n">
                 <div class="work-placeholder">Case</div>
               </div>
@@ -169,6 +172,7 @@
                 <div class="work-tags">
                   <span>向量检索</span><span>RAG</span><span>Python</span>
                 </div>
+                <span class="work-link">点击查看架构 →</span>
               </div>
             </div>
           </div>
@@ -186,21 +190,21 @@
         <div class="phil-section">
           <h3 class="phil-heading">⛳ 1+N 架构模式</h3>
           <div class="phil-grid">
-            <div class="phil-card phil-card-1">
+            <div class="phil-card phil-card-1" data-modal="phil-1n">
               <div class="phil-card-title">1 · 核心平台</div>
               <p>AC Platform 提供完整的 E/D/S/Q 流水线：输入编码 → 专家调度 → 编排执行 → 治理输出。所有数据通过 ac_platform.db 统一持久化。</p>
               <div class="phil-tags">
                 <span>CLI 入口</span><span>调度引擎</span><span>治理管道</span><span>统一 DB</span>
               </div>
             </div>
-            <div class="phil-card phil-card-n">
+            <div class="phil-card phil-card-n" data-modal="phil-n">
               <div class="phil-card-title">N · 独立模块</div>
               <p>Orchestrator、Anchor Engine、Case Center、QA 框架等作为独立子模块，各司其职、可独立演进。通过平台契约对接，不产生循环依赖。</p>
               <div class="phil-tags">
                 <span>解耦</span><span>独立演进</span><span>契约对接</span>
               </div>
             </div>
-            <div class="phil-card phil-card-eav">
+            <div class="phil-card phil-card-eav" data-modal="phil-eav">
               <div class="phil-card-title">EAV 事实模型</div>
               <p>锚点引擎使用 EAV 三元组（实体-属性-值）表达事实，配合极性检测和锚点库比对，实现无幻觉的事实核验层。</p>
               <div class="phil-tags">
@@ -405,6 +409,13 @@
       <p>&copy; 2026 Hermes. All rights reserved.</p>
     </div>
   </footer>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>
