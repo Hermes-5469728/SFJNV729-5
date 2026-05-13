@@ -444,6 +444,11 @@ body {
   white-space: nowrap;
 }
 
+.arch-layer-desc {
+  font-size: 0.78em; color: var(--text-tertiary);
+  margin: 0;
+}
+
 .arch-arrow {
   font-size: 1.2em; color: var(--text-tertiary);
   padding: 4px 0;

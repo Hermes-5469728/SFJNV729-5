@@ -114,7 +114,7 @@
                 <div class="work-tags">
                   <span>Python</span><span>架构设计</span><span>NLP</span><span>状态机</span><span>EAV</span>
                 </div>
-                <span class="work-link">点击查看架构 →</span>
+                <span class="work-link">点击查看详情 →</span>
               </div>
             </div>
           </div>
@@ -133,7 +133,7 @@
                 <div class="work-tags">
                   <span>异步</span><span>状态机</span><span>Python</span>
                 </div>
-                <span class="work-link">点击查看架构 →</span>
+                <span class="work-link">点击查看详情 →</span>
               </div>
             </div>
             <div class="work-card" data-modal="governance">
@@ -146,7 +146,7 @@
                 <div class="work-tags">
                   <span>安全</span><span>验证</span><span>EAV</span>
                 </div>
-                <span class="work-link">点击查看架构 →</span>
+                <span class="work-link">点击查看详情 →</span>
               </div>
             </div>
             <div class="work-card" data-modal="anchor-engine">
@@ -159,7 +159,7 @@
                 <div class="work-tags">
                   <span>EAV</span><span>NLP</span><span>规则引擎</span>
                 </div>
-                <span class="work-link">点击查看架构 →</span>
+                <span class="work-link">点击查看详情 →</span>
               </div>
             </div>
             <div class="work-card" data-modal="case-center">
@@ -172,7 +172,7 @@
                 <div class="work-tags">
                   <span>向量检索</span><span>RAG</span><span>Python</span>
                 </div>
-                <span class="work-link">点击查看架构 →</span>
+                <span class="work-link">点击查看详情 →</span>
               </div>
             </div>
           </div>
@@ -220,62 +220,27 @@
           <div class="db-schema">
             <div class="db-table db-table-primary">
               <div class="db-table-name">ac_experts</div>
-              <div class="db-table-desc">专家注册表</div>
-              <div class="db-table-fields">
-                <span class="db-pk">expert_id</span>
-                <span>name</span><span>category</span>
-                <span>trigger_words</span><span>priority</span>
-                <span>role_definition</span>
-              </div>
+              <div class="db-table-desc">专家注册与匹配</div>
             </div>
-            <div class="db-arrow">⚡</div>
             <div class="db-table db-table-secondary">
               <div class="db-table-name">ac_schedule_log</div>
               <div class="db-table-desc">调度日志</div>
-              <div class="db-table-fields">
-                <span class="db-pk">log_id</span>
-                <span>session_id</span>
-                <span>query_hash</span>
-                <span>matched_expert</span>
-              </div>
             </div>
             <div class="db-table db-table-secondary">
               <div class="db-table-name">ac_governance_log</div>
               <div class="db-table-desc">治理审计日志</div>
-              <div class="db-table-fields">
-                <span class="db-pk">id</span>
-                <span>session_id</span>
-                <span>passed</span><span>checks_json</span>
-                <span>corrected</span><span>encoding_events</span>
-              </div>
             </div>
             <div class="db-table db-table-secondary">
               <div class="db-table-name">ac_truth</div>
-              <div class="db-table-desc">真值表（已验证知识）</div>
-              <div class="db-table-fields">
-                <span class="db-pk">truth_id</span>
-                <span>title</span><span>category</span>
-                <span>content</span><span>verified</span>
-                <span>tags</span>
-              </div>
+              <div class="db-table-desc">已验证知识库</div>
             </div>
             <div class="db-table db-table-secondary">
               <div class="db-table-name">task_graphs</div>
               <div class="db-table-desc">编排任务图</div>
-              <div class="db-table-fields">
-                <span class="db-pk">session_id</span>
-                <span>status</span><span>plan</span>
-                <span>metrics</span><span>shared_context</span>
-              </div>
             </div>
             <div class="db-table db-table-secondary">
               <div class="db-table-name">migration_history</div>
-              <div class="db-table-desc">数据库迁移审计</div>
-              <div class="db-table-fields">
-                <span class="db-pk">migration_id</span>
-                <span>version</span><span>name</span>
-                <span>applied_at</span><span>success</span>
-              </div>
+              <div class="db-table-desc">Schema 迁移审计</div>
             </div>
           </div>
         </div>
@@ -310,45 +275,27 @@
             </div>
             <div class="arch-layer arch-l0">
               <div class="arch-layer-title">L0 编码层</div>
-              <div class="arch-tags">
-                <span class="arch-tag">U+FFFD 检测</span>
-                <span class="arch-tag">GBK→UTF-8 恢复</span>
-                <span class="arch-tag">stdin/stdout 重配置</span>
-              </div>
+              <p class="arch-layer-desc">输入清洗与编码修复</p>
               <div class="arch-arrow">↓</div>
             </div>
             <div class="arch-split">
               <div class="arch-branch">
                 <div class="arch-layer arch-dispatch">
                   <div class="arch-layer-title">D · Dispatch</div>
-                  <div class="arch-tags">
-                    <span class="arch-tag">trigger 匹配</span>
-                    <span class="arch-tag">优先级排序 (P1-P5)</span>
-                    <span class="arch-tag">案例检索</span>
-                  </div>
+                  <p class="arch-layer-desc">专家匹配与调度</p>
                 </div>
               </div>
               <div class="arch-branch">
                 <div class="arch-layer arch-annotate">
                   <div class="arch-layer-title">S · Orchestrator</div>
-                  <div class="arch-tags">
-                    <span class="arch-tag">13态状态机</span>
-                    <span class="arch-tag">PLAN/EXECUTE/VERIFY</span>
-                    <span class="arch-tag">HITL 人在回路</span>
-                  </div>
+                  <p class="arch-layer-desc">多轮编排与任务管理</p>
                 </div>
               </div>
             </div>
             <div class="arch-arrow">↓</div>
             <div class="arch-layer arch-gov">
               <div class="arch-layer-title">Q · Governance Pipeline</div>
-              <div class="arch-tags">
-                <span class="arch-tag">encoding check</span>
-                <span class="arch-tag">syntax check</span>
-                <span class="arch-tag">semantic check</span>
-                <span class="arch-tag">security check</span>
-                <span class="arch-tag">corrector ×3</span>
-              </div>
+              <p class="arch-layer-desc">多层检查 · 自动修正 · 协同治理</p>
               <div class="arch-arrow">↓</div>
             </div>
             <div class="arch-layer arch-output">
@@ -360,14 +307,14 @@
               <div class="arch-sidebar-icon">🧠</div>
               <div class="arch-sidebar-text">
                 <strong>Anchor Engine</strong>
-                <span>EAV 事实核验</span>
+                <span>事实核验</span>
               </div>
             </div>
             <div class="arch-sidebar-item">
               <div class="arch-sidebar-icon">📚</div>
               <div class="arch-sidebar-text">
                 <strong>Case Center</strong>
-                <span>失败学习 & 检索</span>
+                <span>经验学习 & 检索</span>
               </div>
             </div>
             <div class="arch-sidebar-item">
