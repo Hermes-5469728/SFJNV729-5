@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="个人主页">
+  <title>主页</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <a href="index.html" class="logo">Home</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
+      <ul class="nav-links">
+        <li><a href="#about">关于</a></li>
+        <li><a href="#skills">技能</a></li>
+        <li><a href="#works">作品</a></li>
+        <li><a href="#projects">项目</a></li>
+        <li><a href="#ac-arch">架构</a></li>
+        <li><a href="blog/index.html">博客</a></li>
+        <li><a href="#contact">联系</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="avatar">A</div>
+          <h1>你好，我是 <span class="gradient-text">名字</span></h1>
+          <p class="subtitle">全栈开发者 · 设计师 · 创造者</p>
+          <div class="hero-actions">
+            <a href="#works" class="btn btn-primary">查看作品</a>
+            <a href="#contact" class="btn btn-outline">联系我</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">关于我</h2>
+          <p class="section-subtitle">全栈开发者 · 设计师 · 创造者</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-avatar">A</div>
+          <div class="about-text">
+            <p>这里写一段关于你的介绍。可以描述你的背景、兴趣、职业目标等。</p>
+            <p>保持简洁有力，让访客在几秒内了解你是谁、做什么。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section section-alt fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">技能</h2>
+          <p class="section-subtitle">技术栈与专业领域</p>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <span class="skill-icon">🎨</span>
+            <h3>前端</h3>
+            <div class="skill-tags">
+              <span>HTML/CSS</span><span>JavaScript</span><span>React</span><span>Vue</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skill-icon">⚙️</span>
+            <h3>后端</h3>
+            <div class="skill-tags">
+              <span>Node.js</span><span>Python</span><span>Go</span><span>数据库</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skill-icon">🛠️</span>
+            <h3>工具</h3>
+            <div class="skill-tags">
+              <span>Git</span><span>Docker</span><span>CI/CD</span><span>Linux</span>
+            </div>
+          </div>
+          <div class="skill-card">
+            <span class="skill-icon">✏️</span>
+            <h3>设计</h3>
+            <div class="skill-tags">
+              <span>UI/UX</span><span>Figma</span><span>原型设计</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="works" class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">个人作品</h2>
+          <p class="section-subtitle">精选项目和作品展示</p>
+        </div>
+        <div class="works-grid">
+          <div class="work-card">
+            <div class="work-thumb">
+              <div class="work-placeholder">
+                <span>AC Platform</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <h3>AC 架构调度平台</h3>
+              <p>E/D/S/Q 四层架构的 AI 调度与治理平台，支持专家匹配、L5标注、多轮编排与协同治理。</p>
+              <div class="work-tags">
+                <span>Python</span><span>架构设计</span><span>NLP</span>
+              </div>
+              <a href="#ac-arch" class="work-link">架构详情 →</a>
+            </div>
+          </div>
+          <div class="work-card">
+            <div class="work-thumb">
+              <div class="work-placeholder">
+                <span>Orchestrator</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <h3>多轮规划编排引擎</h3>
+              <p>13态任务状态机、PLAN/EXECUTE/VERIFY/RESOLVE/LOG 五阶段循环、HITL 人在回路。</p>
+              <div class="work-tags">
+                <span>异步</span><span>状态机</span><span>Python</span>
+              </div>
+              <a href="#ac-arch" class="work-link">架构详情 →</a>
+            </div>
+          </div>
+          <div class="work-card">
+            <div class="work-thumb">
+              <div class="work-placeholder">
+                <span>Governance</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <h3>协同治理管道</h3>
+              <p>四层检查 + 三重修正的安全治理管道，EAV锚点引擎提供事实核验，案例中心支持失败学习。</p>
+              <div class="work-tags">
+                <span>安全</span><span>验证</span><span>EAV</span>
+              </div>
+              <a href="#ac-arch" class="work-link">架构详情 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">项目</h2>
+          <p class="section-subtitle">我参与开发的项目</p>
+        </div>
+        <div class="projects-grid">
+          <div class="project-card">
+            <h3>项目一</h3>
+            <p>项目简介，描述做了什么、用到的技术栈。</p>
+            <div class="project-links">
+              <a href="#" target="_blank">查看 →</a>
+            </div>
+          </div>
+          <div class="project-card">
+            <h3>项目二</h3>
+            <p>项目简介，描述做了什么、用到的技术栈。</p>
+            <div class="project-links">
+              <a href="#" target="_blank">查看 →</a>
+            </div>
+          </div>
+          <div class="project-card">
+            <h3>项目三</h3>
+            <p>项目简介，描述做了什么、用到的技术栈。</p>
+            <div class="project-links">
+              <a href="#" target="_blank">查看 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="blog" class="section section-alt fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">最新博客</h2>
+          <p class="section-subtitle">技术分享与学习笔记</p>
+        </div>
+        <div class="blog-preview" id="blogPreview">
+        </div>
+        <div class="text-center">
+          <a href="blog/index.html" class="btn btn-outline">查看全部 →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ac-arch" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">AC 平台架构</h2>
+          <p class="section-subtitle">E = Encoder · D = Dispatch · S = Scheduler · Q = QA</p>
+        </div>
+        <div class="arch-container fade-in">
+          <div class="arch-flow">
+            <div class="arch-layer arch-input">
+              <div class="arch-label">用户输入</div>
+              <div class="arch-arrow">↓</div>
+            </div>
+            <div class="arch-layer arch-l0">
+              <div class="arch-layer-title">L0 编码层</div>
+              <div class="arch-tags">
+                <span class="arch-tag">U+FFFD 检测</span>
+                <span class="arch-tag">GBK→UTF-8 恢复</span>
+                <span class="arch-tag">stdin/stdout 重配置</span>
+              </div>
+              <div class="arch-arrow">↓</div>
+            </div>
+            <div class="arch-split">
+              <div class="arch-branch">
+                <div class="arch-layer arch-dispatch">
+                  <div class="arch-layer-title">D · Dispatch</div>
+                  <div class="arch-tags">
+                    <span class="arch-tag">trigger 匹配</span>
+                    <span class="arch-tag">优先级排序 (P1-P5)</span>
+                    <span class="arch-tag">案例检索</span>
+                  </div>
+                </div>
+              </div>
+              <div class="arch-branch">
+                <div class="arch-layer arch-annotate">
+                  <div class="arch-layer-title">S · Orchestrator</div>
+                  <div class="arch-tags">
+                    <span class="arch-tag">13态状态机</span>
+                    <span class="arch-tag">PLAN/EXECUTE/VERIFY</span>
+                    <span class="arch-tag">HITL 人在回路</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer arch-gov">
+              <div class="arch-layer-title">Q · Governance Pipeline</div>
+              <div class="arch-tags">
+                <span class="arch-tag">encoding check</span>
+                <span class="arch-tag">syntax check</span>
+                <span class="arch-tag">semantic check</span>
+                <span class="arch-tag">security check</span>
+                <span class="arch-tag">corrector ×3</span>
+              </div>
+              <div class="arch-arrow">↓</div>
+            </div>
+            <div class="arch-layer arch-output">
+              <div class="arch-label">stdout</div>
+            </div>
+          </div>
+          <div class="arch-sidebar">
+            <div class="arch-sidebar-item">
+              <div class="arch-sidebar-icon">🧠</div>
+              <div class="arch-sidebar-text">
+                <strong>Anchor Engine</strong>
+                <span>EAV 事实核验</span>
+              </div>
+            </div>
+            <div class="arch-sidebar-item">
+              <div class="arch-sidebar-icon">📚</div>
+              <div class="arch-sidebar-text">
+                <strong>Case Center</strong>
+                <span>失败学习 & 检索</span>
+              </div>
+            </div>
+            <div class="arch-sidebar-item">
+              <div class="arch-sidebar-icon">🔒</div>
+              <div class="arch-sidebar-text">
+                <strong>Collaborative Gov</strong>
+                <span>契约验证 & 资源锁</span>
+              </div>
+            </div>
+            <div class="arch-sidebar-item">
+              <div class="arch-sidebar-icon">💾</div>
+              <div class="arch-sidebar-text">
+                <strong>ac_platform.db</strong>
+                <span>SQLite 持久化</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">联系我</h2>
+          <p class="section-subtitle">欢迎交流与合作</p>
+        </div>
+        <div class="contact-grid">
+          <a href="mailto:example@email.com" class="contact-item">📧 Email</a>
+          <a href="https://github.com" target="_blank" class="contact-item">🐙 GitHub</a>
+          <a href="https://twitter.com" target="_blank" class="contact-item">🐦 Twitter</a>
+          <a href="https://linkedin.com" target="_blank" class="contact-item">💼 LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 名字. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
