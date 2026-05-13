@@ -497,6 +497,140 @@ body {
   }
 }
 
+/* ── Works: 1+N ── */
+.works-category { margin-bottom: 40px; }
+.works-category:last-child { margin-bottom: 0; }
+
+.works-category-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.85em; font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 16px; padding: 4px 14px;
+  border-radius: 20px;
+  background: var(--accent-glow);
+}
+
+.work-card-core {
+  border-color: var(--accent);
+  border-width: 2px;
+}
+.work-thumb-core {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+}
+.work-thumb-n {
+  background: linear-gradient(135deg, var(--text-tertiary), var(--text-secondary));
+}
+
+/* ── Philosophy ── */
+.phil-section { margin-bottom: 52px; }
+.phil-section:last-child { margin-bottom: 0; }
+
+.phil-heading {
+  font-size: 1.25em; font-weight: 700;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.phil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.phil-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all 0.3s;
+}
+.phil-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.phil-card-1 { border-top: 3px solid var(--accent); }
+.phil-card-n { border-top: 3px solid #8b5cf6; }
+.phil-card-eav { border-top: 3px solid #10b981; }
+
+.phil-card-title {
+  font-size: 0.95em; font-weight: 700;
+  margin-bottom: 8px;
+}
+.phil-card p {
+  font-size: 0.85em; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 12px;
+}
+
+.phil-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.phil-tags span {
+  font-size: 0.7em; font-weight: 500;
+  padding: 2px 10px; border-radius: 6px;
+  background: var(--bg-alt);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.phil-db-intro {
+  font-size: 0.9em; color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* ── DB Schema ── */
+.db-schema {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.db-table {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  transition: all 0.2s;
+}
+.db-table:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.db-table-primary {
+  border-color: var(--accent);
+  border-width: 2px;
+  grid-column: 1 / -1;
+}
+
+.db-table-name {
+  font-size: 0.88em; font-weight: 700;
+  font-family: "SF Mono", "Fira Code", monospace;
+  margin-bottom: 2px;
+}
+
+.db-table-desc {
+  font-size: 0.75em; color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+.db-table-fields {
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.db-table-fields span {
+  font-size: 0.68em; font-weight: 500;
+  padding: 1px 8px; border-radius: 4px;
+  background: var(--bg-alt);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.db-pk {
+  background: var(--accent-glow) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
 /* ── Projects ── */
 .projects-grid {
   display: grid;
@@ -647,4 +781,7 @@ body {
   .nav-links { gap: 2px; }
   .nav-links a { font-size: 0.78em; padding: 4px 10px; }
   .section { padding: 64px 0; }
+  .phil-grid { grid-template-columns: 1fr; }
+  .db-schema { grid-template-columns: 1fr; }
+  .db-table-primary { grid-column: 1; }
 }
