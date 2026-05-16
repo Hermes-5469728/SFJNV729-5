@@ -1,0 +1,59 @@
+name,url,port,category,status,layer
+LiteLLM,https://github.com/BerriAI/litellm,7500,gateway,active,①模型层
+Open WebUI,https://github.com/open-webui/open-webui,8100,frontend,active,①模型层
+LocalAI,https://github.com/localai/localai,7501,model,standby,①模型层
+Mem0,https://github.com/mem0ai/mem0,7601,memory,active,②记忆层
+RAGFlow,https://github.com/infiniflow/ragflow,7602,knowledge,active,②记忆层
+LanceDB,https://github.com/lancedb/lancedb,,vector,active,②记忆层
+FastGPT,https://github.com/labring/FastGPT,7603,knowledge,standby,②记忆层
+MaxKB,https://github.com/1Panel-dev/MaxKB,7604,knowledge,standby,②记忆层
+Ruflo,https://github.com/ruflo-ai/ruflo,7605,knowledge,standby,②记忆层
+Dify,https://github.com/langgenius/dify,8101,llmops,active,②记忆层
+MemOS,,8601,memory,standby,②记忆层
+open-zk-kb,,8602,memory,standby,②记忆层
+kgraph,,8603,knowledge,standby,②记忆层
+CrewAI,https://github.com/crewAIInc/crewAI,7701,agent,active,③Agent层
+AutoGen,https://github.com/microsoft/autogen,7702,agent,standby,③Agent层
+MetaGPT,https://github.com/geekan/MetaGPT,7703,agent,standby,③Agent层
+AgentScope,https://github.com/agentscope-ai/agentscope,7704,agent,standby,③Agent层
+OpenCode,https://github.com/opencode-ai/opencode,7801,execution,active,④执行层
+Hermes Agent,https://github.com/nousresearch/ac-agent,7801,execution,active,④执行层
+OpenHands,https://github.com/All-Hands-AI/OpenHands,7802,execution,standby,④执行层
+Continue,https://github.com/continuedev/continue,,ide,standby,④执行层
+Void IDE,,,ide,standby,④执行层
+Aider,https://github.com/paul-gauthier/aider,7803,execution,standby,④执行层
+Cline,,,ide,standby,④执行层
+Roo Cline,,,ide,standby,④执行层
+DeepSeek-TUI,,7804,execution,standby,④执行层
+AutoGenesis,https://github.com/autogenesis-ai/autogenesis,7805,execution,standby,④执行层
+LobsterAI,https://github.com/netease/lobster-ai,7806,execution,standby,④执行层
+DeepAudit,https://github.com/lintsinghua/deepaudit,7901,audit,active,⑤审计层
+TRUST,,7902,audit,standby,⑤审计层
+ClawVault,,8701,security,standby,⑤审计层
+PrefixGuard,,8702,security,standby,⑤审计层
+KCode,,8703,security,standby,⑤审计层
+Schemathesis,,,test,standby,⑤审计层
+TestMaker,,8802,test,standby,⑤审计层
+Autotestplat,https://github.com/Autotestplat/Autotestplat,8801,test,standby,⑤审计层
+夜莺,https://github.com/ccfos/nightingale,8201,monitor,standby,运维
+SigNoz,,8202,monitor,standby,运维
+Prometheus+Grafana,,8203,monitor,standby,运维
+Zabbix,,8205,monitor,standby,运维
+Coroot,,8206,monitor,standby,运维
+Jenkins,https://github.com/jenkinsci/jenkins,8301,cicd,active,运维
+Woodpecker CI,,8302,cicd,active,运维
+Forge CI,,8303,cicd,standby,运维
+Coolify,,8304,cicd,standby,运维
+Ansible,,,cicd,standby,运维
+BuildBot,,8305,cicd,standby,运维
+禅道,https://github.com/easysoft/zentaopms,8401,pm,standby,运维
+Plane,,8402,pm,standby,运维
+Taiga,,8403,pm,standby,运维
+Huly,,8404,pm,standby,运维
+Outline,,8604,pm,standby,运维
+京医千询,https://github.com/BeijingMedicalAI/JingYiQianXun,8501,medical,standby,医学
+Janus-Pro-CXR,https://github.com/wu-lab/Janus-Pro-CXR,8502,medical,standby,医学
+iNeuOS_Doctor,https://github.com/iNeuOS/iNeuOS_Doctor,8503,medical,standby,医学
+MedPilot/Mira,,8504,medical,standby,医学
+PixelDeck,,,medical,standby,医学
+SegMed,,,medical,standby,医学

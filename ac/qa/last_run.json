@@ -1,0 +1,170 @@
+{
+  "timestamp": "2026-05-16T05:02:20.512561+00:00",
+  "s5_raw": 0.98,
+  "s5_normalized": 78.4,
+  "target": 80,
+  "modules": {
+    "precision_probe": {
+      "score": 0.8999999999999999,
+      "zh": 3,
+      "valid": 4,
+      "deduped": 5,
+      "original": 5
+    },
+    "speed": {
+      "clean_sec": 0.0,
+      "dedup_sec": 0.0048,
+      "score": 1.0
+    }
+  },
+  "tests": {
+    "total": 34,
+    "passed": 34,
+    "failed": 0,
+    "details": [
+      {
+        "test": "test_cleaner.test_clean_empty",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_clean_integration",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_clean_preserves_content",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_collapse_whitespace",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_is_valid_length",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_normalize_unicode",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_strip_ad_tracking",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_strip_html",
+        "status": "PASS"
+      },
+      {
+        "test": "test_cleaner.test_strip_html_entities",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_deduplicate_docs_exact",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_deduplicate_docs_no_dup",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_deduplicate_empty",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_deduplicate_single",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_minhash_different_docs_low_similarity",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_minhash_empty_signature",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_minhash_same_docs_high_similarity",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_simhash_empty_string",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_simhash_is_duplicate_threshold",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_simhash_near_duplicate",
+        "status": "PASS"
+      },
+      {
+        "test": "test_deduplicator.test_simhash_same_text",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_detect_empty",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_detect_en",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_detect_ja",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_detect_zh",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_is_target_zh_accepts_zh",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_is_target_zh_rejects_en",
+        "status": "PASS"
+      },
+      {
+        "test": "test_language_filter.test_mixed_lang_detection",
+        "status": "PASS"
+      },
+      {
+        "test": "test_pipeline.test_full_pipeline_clean_then_dedup",
+        "status": "PASS"
+      },
+      {
+        "test": "test_pipeline.test_full_pipeline_dedup_then_length_check",
+        "status": "PASS"
+      },
+      {
+        "test": "test_pipeline.test_full_pipeline_dirty_to_clean",
+        "status": "PASS"
+      },
+      {
+        "test": "test_pipeline.test_full_pipeline_filter_zh_only",
+        "status": "PASS"
+      },
+      {
+        "test": "test_quality_filter.test_quality_filter_empty_string",
+        "status": "PASS"
+      },
+      {
+        "test": "test_quality_filter.test_quality_filter_meaningful_text",
+        "status": "PASS"
+      },
+      {
+        "test": "test_quality_filter.test_quality_filter_passthrough_on_no_model",
+        "status": "PASS"
+      }
+    ]
+  },
+  "coverage": {
+    "cleaner": true,
+    "deduplicator": true,
+    "language": true,
+    "quality": true,
+    "pipeline": true
+  }
+}

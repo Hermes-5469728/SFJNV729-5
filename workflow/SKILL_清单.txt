@@ -1,0 +1,85 @@
+Skill 清单 - Opencode + Trae + Obsidian
+========================================
+平台整合索引，按工具分类，标注来源与用途
+
+
+一、Opencode Skills
+-------------------
+Opencode Skills 存储在 .config/opencode/skills/，按功能域分目录。
+
+工程类 (engineering):
+  diagnose               硬 Bug 诊断循环
+  grill-with-docs        对照领域模型和文档拷问方案
+  improve-codebase-architecture  代码库深化与解耦
+  prototype              构建可丢弃原型
+  setup-matt-pocock-skills  注册工程 Skill
+  tdd                    红-绿-重构 TDD
+  to-issues              计划拆解为 issue
+  to-prd                 对话转 PRD
+  triage                 Issue 状态机分类
+  zoom-out               代码库高层上下文
+
+生产力类 (productivity):
+  caveman                极简通信，减 75% token
+  grill-me               决策树拷问
+  handoff                对话压缩为交接文档
+  write-a-skill          创建新 Skill
+
+杂项 (misc):
+  git-guardrails-claude-code  Git 安全钩子
+  migrate-to-shoehorn     as 断言迁移
+  scaffold-exercises      练习题目录搭建
+  setup-pre-commit        Husky 配置
+
+个人类 (personal):
+  edit-article            编辑文章
+  obsidian-vault          Obsidian 笔记操作
+
+已废弃:  design-an-interface, qa, request-refactor-plan, ubiquitous-language
+进行中:  review, writing-beats, writing-fragments, writing-shape
+
+
+二、Trae Skills
+---------------
+Trae Skills 存储在 00-AC/projects/.trae/skills/。
+
+2.1 mattpocock-skills（28 个 SKILL.md）
+  与 Opencode Skills 完全一致的技能集。
+  分类: engineering(10) / productivity(4) / misc(4) / personal(2) / deprecated(4) / in-progress(4)
+
+2.2 personal-data-center（1 个 SKILL.md）
+  personal-data-center  个人数据中心操作指南
+
+2.3 chinese-prompts（200+ AI Prompt 文件）
+  按平台/模型分类的 Prompt 采集库，不通过 skill_loader 加载。
+  覆盖: OpenAI / Google Gemini / Grok / 字节Trae+豆包 / 月之暗面Kimi
+        MiniMax / 腾讯CodeBuddy / 阿里Qoder / 深度求索
+        Anthropic / Cursor / Windsurf / Cline / Roo Code / Bolt
+        Lovable / v0 / Replit / Manus / Perplexity / Devin
+        Notion AI / Copilot / Xcode / Warp / Raycast 等
+
+
+三、Obsidian 集成
+-----------------
+3.1 Obsidian Vault Skill
+  通过 opencode obsidian-vault Skill 交互:
+  - 搜索笔记 / 创建笔记 / 管理 Wikilink / 维护 Index
+
+3.2 笔记存储路径
+  HERMES-DATE/HERMES-DATE/.obsidian/
+
+3.3 关联数据
+  00-DataCenter/ 作为知识库数据源
+  - anchor_db.json（锚点引擎事实库）
+  - 结构化数据文件
+
+
+四、Skill 数量统计
+-----------------
+  Opencode skills:  28（20活跃 + 4废弃 + 4进行中）
+  Trae SKILL.md:    29（28 mattpocock + 1 personal-data-center）
+  Trae prompts:     200+ 模型 Prompt
+  Obsidian:         1 vault + 1 bridge skill
+
+
+生成日期: 2026-05-13

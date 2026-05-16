@@ -1,0 +1,395 @@
+# 由 plugins/generate_registry.py 自动生成，勿手动编辑
+version: "3.8"
+
+services:
+  litellm:
+    image: litellm:latest  # https://github.com/BerriAI/litellm
+    ports:
+      - "7500:7500"
+    profiles:
+      - active  # gateway | ①模型层
+    restart: unless-stopped
+
+  open-webui:
+    image: open-webui:latest  # https://github.com/open-webui/open-webui
+    ports:
+      - "8100:8100"
+    profiles:
+      - active  # frontend | ①模型层
+    restart: unless-stopped
+
+  mem0:
+    image: mem0:latest  # https://github.com/mem0ai/mem0
+    ports:
+      - "7601:7601"
+    profiles:
+      - active  # memory | ②记忆层
+    restart: unless-stopped
+
+  ragflow:
+    image: ragflow:latest  # https://github.com/infiniflow/ragflow
+    ports:
+      - "7602:7602"
+    profiles:
+      - active  # knowledge | ②记忆层
+    restart: unless-stopped
+
+  dify:
+    image: dify:latest  # https://github.com/langgenius/dify
+    ports:
+      - "8101:8101"
+    profiles:
+      - active  # llmops | ②记忆层
+    restart: unless-stopped
+
+  crewai:
+    image: crewai:latest  # https://github.com/crewAIInc/crewAI
+    ports:
+      - "7701:7701"
+    profiles:
+      - active  # agent | ③Agent层
+    restart: unless-stopped
+
+  opencode:
+    image: opencode:latest  # https://github.com/opencode-ai/opencode
+    ports:
+      - "7801:7801"
+    profiles:
+      - active  # execution | ④执行层
+    restart: unless-stopped
+
+  ac-agent:
+    image: ac-agent:latest  # https://github.com/nousresearch/ac-agent
+    ports:
+      - "7801:7801"
+    profiles:
+      - active  # execution | ④执行层
+    restart: unless-stopped
+
+  deepaudit:
+    image: deepaudit:latest  # https://github.com/lintsinghua/deepaudit
+    ports:
+      - "7901:7901"
+    profiles:
+      - active  # audit | ⑤审计层
+    restart: unless-stopped
+
+  jenkins:
+    image: jenkins:latest  # https://github.com/jenkinsci/jenkins
+    ports:
+      - "8301:8301"
+    profiles:
+      - active  # cicd | 运维
+    restart: unless-stopped
+
+  woodpecker-ci:
+    image: woodpecker-ci:latest  # 无镜像
+    ports:
+      - "8302:8302"
+    profiles:
+      - active  # cicd | 运维
+    restart: unless-stopped
+
+  localai:
+    image: localai:latest  # https://github.com/localai/localai
+    ports:
+      - "7501:7501"
+    profiles:
+      - standby  # model | ①模型层
+    restart: unless-stopped
+
+  fastgpt:
+    image: fastgpt:latest  # https://github.com/labring/FastGPT
+    ports:
+      - "7603:7603"
+    profiles:
+      - standby  # knowledge | ②记忆层
+    restart: unless-stopped
+
+  maxkb:
+    image: maxkb:latest  # https://github.com/1Panel-dev/MaxKB
+    ports:
+      - "7604:7604"
+    profiles:
+      - standby  # knowledge | ②记忆层
+    restart: unless-stopped
+
+  ruflo:
+    image: ruflo:latest  # https://github.com/ruflo-ai/ruflo
+    ports:
+      - "7605:7605"
+    profiles:
+      - standby  # knowledge | ②记忆层
+    restart: unless-stopped
+
+  memos:
+    image: memos:latest  # 无镜像
+    ports:
+      - "8601:8601"
+    profiles:
+      - standby  # memory | ②记忆层
+    restart: unless-stopped
+
+  open-zk-kb:
+    image: open-zk-kb:latest  # 无镜像
+    ports:
+      - "8602:8602"
+    profiles:
+      - standby  # memory | ②记忆层
+    restart: unless-stopped
+
+  kgraph:
+    image: kgraph:latest  # 无镜像
+    ports:
+      - "8603:8603"
+    profiles:
+      - standby  # knowledge | ②记忆层
+    restart: unless-stopped
+
+  autogen:
+    image: autogen:latest  # https://github.com/microsoft/autogen
+    ports:
+      - "7702:7702"
+    profiles:
+      - standby  # agent | ③Agent层
+    restart: unless-stopped
+
+  metagpt:
+    image: metagpt:latest  # https://github.com/geekan/MetaGPT
+    ports:
+      - "7703:7703"
+    profiles:
+      - standby  # agent | ③Agent层
+    restart: unless-stopped
+
+  agentscope:
+    image: agentscope:latest  # https://github.com/agentscope-ai/agentscope
+    ports:
+      - "7704:7704"
+    profiles:
+      - standby  # agent | ③Agent层
+    restart: unless-stopped
+
+  openhands:
+    image: openhands:latest  # https://github.com/All-Hands-AI/OpenHands
+    ports:
+      - "7802:7802"
+    profiles:
+      - standby  # execution | ④执行层
+    restart: unless-stopped
+
+  aider:
+    image: aider:latest  # https://github.com/paul-gauthier/aider
+    ports:
+      - "7803:7803"
+    profiles:
+      - standby  # execution | ④执行层
+    restart: unless-stopped
+
+  deepseek-tui:
+    image: deepseek-tui:latest  # 无镜像
+    ports:
+      - "7804:7804"
+    profiles:
+      - standby  # execution | ④执行层
+    restart: unless-stopped
+
+  autogenesis:
+    image: autogenesis:latest  # https://github.com/autogenesis-ai/autogenesis
+    ports:
+      - "7805:7805"
+    profiles:
+      - standby  # execution | ④执行层
+    restart: unless-stopped
+
+  lobsterai:
+    image: lobsterai:latest  # https://github.com/netease/lobster-ai
+    ports:
+      - "7806:7806"
+    profiles:
+      - standby  # execution | ④执行层
+    restart: unless-stopped
+
+  trust:
+    image: trust:latest  # 无镜像
+    ports:
+      - "7902:7902"
+    profiles:
+      - standby  # audit | ⑤审计层
+    restart: unless-stopped
+
+  clawvault:
+    image: clawvault:latest  # 无镜像
+    ports:
+      - "8701:8701"
+    profiles:
+      - standby  # security | ⑤审计层
+    restart: unless-stopped
+
+  prefixguard:
+    image: prefixguard:latest  # 无镜像
+    ports:
+      - "8702:8702"
+    profiles:
+      - standby  # security | ⑤审计层
+    restart: unless-stopped
+
+  kcode:
+    image: kcode:latest  # 无镜像
+    ports:
+      - "8703:8703"
+    profiles:
+      - standby  # security | ⑤审计层
+    restart: unless-stopped
+
+  testmaker:
+    image: testmaker:latest  # 无镜像
+    ports:
+      - "8802:8802"
+    profiles:
+      - standby  # test | ⑤审计层
+    restart: unless-stopped
+
+  autotestplat:
+    image: autotestplat:latest  # https://github.com/Autotestplat/Autotestplat
+    ports:
+      - "8801:8801"
+    profiles:
+      - standby  # test | ⑤审计层
+    restart: unless-stopped
+
+  夜莺:
+    image: 夜莺:latest  # https://github.com/ccfos/nightingale
+    ports:
+      - "8201:8201"
+    profiles:
+      - standby  # monitor | 运维
+    restart: unless-stopped
+
+  signoz:
+    image: signoz:latest  # 无镜像
+    ports:
+      - "8202:8202"
+    profiles:
+      - standby  # monitor | 运维
+    restart: unless-stopped
+
+  prometheus+grafana:
+    image: prometheus+grafana:latest  # 无镜像
+    ports:
+      - "8203:8203"
+    profiles:
+      - standby  # monitor | 运维
+    restart: unless-stopped
+
+  zabbix:
+    image: zabbix:latest  # 无镜像
+    ports:
+      - "8205:8205"
+    profiles:
+      - standby  # monitor | 运维
+    restart: unless-stopped
+
+  coroot:
+    image: coroot:latest  # 无镜像
+    ports:
+      - "8206:8206"
+    profiles:
+      - standby  # monitor | 运维
+    restart: unless-stopped
+
+  forge-ci:
+    image: forge-ci:latest  # 无镜像
+    ports:
+      - "8303:8303"
+    profiles:
+      - standby  # cicd | 运维
+    restart: unless-stopped
+
+  coolify:
+    image: coolify:latest  # 无镜像
+    ports:
+      - "8304:8304"
+    profiles:
+      - standby  # cicd | 运维
+    restart: unless-stopped
+
+  buildbot:
+    image: buildbot:latest  # 无镜像
+    ports:
+      - "8305:8305"
+    profiles:
+      - standby  # cicd | 运维
+    restart: unless-stopped
+
+  禅道:
+    image: 禅道:latest  # https://github.com/easysoft/zentaopms
+    ports:
+      - "8401:8401"
+    profiles:
+      - standby  # pm | 运维
+    restart: unless-stopped
+
+  plane:
+    image: plane:latest  # 无镜像
+    ports:
+      - "8402:8402"
+    profiles:
+      - standby  # pm | 运维
+    restart: unless-stopped
+
+  taiga:
+    image: taiga:latest  # 无镜像
+    ports:
+      - "8403:8403"
+    profiles:
+      - standby  # pm | 运维
+    restart: unless-stopped
+
+  huly:
+    image: huly:latest  # 无镜像
+    ports:
+      - "8404:8404"
+    profiles:
+      - standby  # pm | 运维
+    restart: unless-stopped
+
+  outline:
+    image: outline:latest  # 无镜像
+    ports:
+      - "8604:8604"
+    profiles:
+      - standby  # pm | 运维
+    restart: unless-stopped
+
+  京医千询:
+    image: 京医千询:latest  # https://github.com/BeijingMedicalAI/JingYiQianXun
+    ports:
+      - "8501:8501"
+    profiles:
+      - standby  # medical | 医学
+    restart: unless-stopped
+
+  janus-pro-cxr:
+    image: janus-pro-cxr:latest  # https://github.com/wu-lab/Janus-Pro-CXR
+    ports:
+      - "8502:8502"
+    profiles:
+      - standby  # medical | 医学
+    restart: unless-stopped
+
+  ineuos_doctor:
+    image: ineuos_doctor:latest  # https://github.com/iNeuOS/iNeuOS_Doctor
+    ports:
+      - "8503:8503"
+    profiles:
+      - standby  # medical | 医学
+    restart: unless-stopped
+
+  medpilot-mira:
+    image: medpilot-mira:latest  # 无镜像
+    ports:
+      - "8504:8504"
+    profiles:
+      - standby  # medical | 医学
+    restart: unless-stopped

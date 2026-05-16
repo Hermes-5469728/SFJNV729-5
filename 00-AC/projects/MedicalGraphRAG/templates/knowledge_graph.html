@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康知识图谱管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/knowledge_graph.css') }}">
+</head>
+<body>
+<div class="admin-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="hospital-logo">
+                <i class="fas fa-book-medical"></i>
+                <h2>健康知识平台</h2>
+            </div>
+        </div>
+
+        <nav class="nav-links">
+            <div class="nav-group">
+                <div class="nav-title">核心功能</div>
+                <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                    <i class="fas fa-user-injured"></i>
+                    <span>用户健康档案管理</span>
+                </a>
+                <a href="{{ url_for('knowledge_management') }}" class="nav-link">
+                    <i class="fas fa-book-medical"></i>
+                    <span>知识库管理</span>
+                </a>
+                <a href="{{ url_for('knowledge_graph') }}" class="nav-link active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>知识图谱管理</span>
+                </a>
+                <a href="{{ url_for('entity_config') }}" class="nav-link">
+                    <i class="fas fa-edit"></i>
+                    <span>实体关系属性配置</span>
+                </a>
+                <a href="{{ url_for('prompt_templates_management') }}" class="nav-link">
+                    <i class="fas fa-code"></i>
+                    <span>Prompt模板管理</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-title">系统设置</div>
+                <a href="{{ url_for('system_settings') }}" class="nav-link"><i
+                        class="fas fa-cog"></i><span>系统设置</span></a>
+                <a href="{{ url_for('logout') }}" class="nav-link"><i
+                        class="fas fa-sign-out-alt"></i><span>退出登录</span></a>
+            </div>
+        </nav>
+
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchNodes" placeholder="搜索实体、关系...">
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">管</div>
+                <div class="user-details">
+                    <div class="user-name">管理员</div>
+                    <div class="user-role">系统管理员</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容区 -->
+        <div class="content-area">
+            <div class="content-header">
+                <h1>健康知识图谱管理</h1>
+                <p>可视化健康知识图谱并管理实体关系</p>
+            </div>
+
+            <div class="kg-control-panel">
+                <div class="kg-input-group">
+                    <textarea id="kg-text-input"
+                              placeholder="输入健康知识文本（如：'维生素C有助于增强免疫力，可以预防感冒'）"></textarea>
+                    <button id="kg-process-btn" class="btn btn-primary">
+                        <i class="fas fa-brain"></i> 分析并更新图谱
+                    </button>
+                </div>
+                <!-- 在 kg-actions 中添加全屏按钮 -->
+                <div class="kg-actions">
+                    <button id="kg-refresh" class="btn btn-outline">
+                        <i class="fas fa-sync"></i> 刷新图谱
+                    </button>
+                    <button id="kg-export" class="btn btn-outline">
+                        <i class="fas fa-download"></i> 导出数据
+                    </button>
+                    <!-- 新增全屏按钮 -->
+                    <button id="kg-fullscreen" class="btn btn-primary" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i> 全屏
+                    </button>
+                    <!-- 原有查询按钮 -->
+                    <div class="query-buttons">
+                        <button class="btn btn-sm btn-outline-info" onclick="kgQuery('path')">
+                            <i class="fas fa-route"></i> 最短路径
+                        </button>
+                        <button class="btn btn-sm btn-outline-info" onclick="kgQuery('centrality')">
+                            <i class="fas fa-bullseye"></i> 中心性分析
+                        </button>
+                        <button class="btn btn-sm btn-outline-info" onclick="kgQuery('search')">
+                            <i class="fas fa-search"></i> 关键词搜索
+                        </button>
+                    </div>
+                    <!-- 统计信息 -->
+                    <div class="kg-stats">
+                        <span><i class="fas fa-cube"></i> 实体: <span id="entity-count">0</span></span>
+                        <span><i class="fas fa-link"></i> 关系: <span id="relation-count">0</span></span>
+                    </div>
+                    <!-- 节点数量控制 -->
+                    <div class="kg-limit-control" style="display:flex;align-items:center;gap:8px;margin-left:12px;">
+                        <label style="color:rgba(255,255,255,.7);font-size:13px;white-space:nowrap;">加载数量:</label>
+                        <input type="range" id="kgLimitSlider" min="50" max="2000" value="500" step="50"
+                               style="width:120px;accent-color:#48dbfb;">
+                        <span id="kgLimitValue" style="color:#48dbfb;font-size:13px;min-width:45px;">500</span>
+                        <button class="btn btn-sm btn-outline-info" id="kgLimitApply" style="padding:4px 10px;font-size:12px;">
+                            <i class="fas fa-check"></i> 应用
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图谱可视化 -->
+            <div class="kg-visualization-container">
+                <div id="kg-network-container"></div>
+                <div class="kg-controls">
+                    <button id="zoom-in" class="btn-icon" title="放大">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button id="zoom-out" class="btn-icon" title="缩小">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button id="reset-view" class="btn-icon" title="重置视图">
+                        <i class="fas fa-crosshairs"></i>
+                    </button>
+                    <button id="fit-view" class="btn-icon" title="适应视图">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+
+                <div class="kg-legend" id="dynamic-legend">
+                    <!-- 图例将通过JavaScript动态生成 -->
+                </div>
+                <!-- 节点详情面板 -->
+                <div class="node-details-panel" id="nodeDetailsPanel">
+                    <div class="panel-header">
+                        <h3 id="panelTitle">
+                            <i class="fas fa-info-circle"></i> 详情信息
+                        </h3>
+                        <div class="panel-controls">
+                            <button class="btn-icon" onclick="togglePanelSize()" title="调整大小">
+                                <i class="fas fa-expand-alt"></i>
+                            </button>
+                            <button class="btn-icon close-panel" onclick="closeNodeDetails()" title="关闭">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-content" id="nodeDetailsContent">
+                        <!-- 动态填充内容 -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 加载提示 -->
+<div class="modal-overlay" id="loadingModal" style="display:none;">
+    <div class="modal-content" style="width:300px;text-align:center;">
+        <h3>正在处理...</h3>
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script src="{{ url_for('static', filename='js/knowledge_graph.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+baseURL: "https://your-site.pages.dev"
+locale: "zh-cn"
+title: "User · 个人站点"
+theme: "PaperMod"
+
+params:
+  env: production
+  author: Hermes
+  description: "架构 · 医学 · 创作"
+  defaultTheme: auto
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+  TocOpen: true
+
+  homeInfoParams:
+    Title: "你好，我是 Hermes"
+    Content: >
+      医学实习生 · AI 架构师 · 个人知识系统建造者
+
+      - Atelier 防御系统作者
+      - DADS 药物查证平台构建者
+      - 自研 SDC + 个人创意工坊
+
+  socialIcons:
+    - name: github
+      url: "https://github.com"
+
+menu:
+  main:
+    - identifier: posts
+      name: 文章
+      url: /posts/
+      weight: 10
+    - identifier: projects
+      name: 项目
+      url: /projects/
+      weight: 20
+    - identifier: about
+      name: 关于
+      url: /about/
+      weight: 30

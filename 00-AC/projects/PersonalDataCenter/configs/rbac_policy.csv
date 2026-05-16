@@ -1,0 +1,6 @@
+p, admin, *, *
+p, user, personal_data, read
+p, user, personal_data, write
+p, user, medical_data, read
+p, doctor, medical_data, write
+p, guest, public_data, read

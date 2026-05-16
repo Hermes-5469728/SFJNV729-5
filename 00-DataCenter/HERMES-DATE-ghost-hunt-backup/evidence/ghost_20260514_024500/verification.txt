@@ -1,0 +1,21 @@
+=== PARALLEL UNIVERSE VERIFICATION ===
+
+Test: CLI dispatch "焦虑" vs Server dispatch "焦虑" 
+CLI ({USER_HOME}\ac\cli.py):
+  status: "matched"
+  matched: [{"name": "心理医生", "category": "L", ...}]
+  query: "焦虑" (correct encoding)
+
+Server (:8000 /dispatch):
+  status: "unclassified"
+  matched: []
+  query: "??" (encoding corruption)
+  governance_passed: true (HARDCODED — no governance actually run)
+
+RESULT: ❌ MISMATCH
+  Root cause: ac_server.py:302 hardcodes governance_passed = True
+  Encoding issue: Server receives query with encoding corruption (?? vs 焦虑)
+  Dispatch result: Server returns no match while CLI finds "心理医生"
+
+This proves the server is NOT using the same code path as the CLI.
+The server has a ghost in the governance check and likely uses a different database/configuration.

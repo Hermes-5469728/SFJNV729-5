@@ -1,0 +1,333 @@
+/* 赛博健康·霓虹版 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap');
+
+:root {
+  --primary: #00f5ff;
+  --secondary: #ff00ff;
+  --bg: #0a0a1a;
+  --glass: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.2);
+  --text: #e0f0ff;
+  --text-dim: #8a9ba8;
+  --radius: 20px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Orbitron', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.health-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 导航 */
+.health-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.nav-logo i { margin-right: 10px; font-size: 2rem; }
+.nav-links a {
+  margin-left: 25px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color .3s;
+}
+.nav-links a.active,
+.nav-links a:hover { color: var(--primary); }
+
+/* 欢迎横幅 */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  padding: 40px 0;
+}
+.welcome-banner h1 { font-size: 2.5rem; margin-bottom: 10px; }
+.welcome-banner p { font-size: 1.2rem; color: var(--text-dim); }
+
+/* 刷新控制 */
+.refresh-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+.switch {
+  position: relative;
+  width: 60px; height: 30px;
+  display: inline-block;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--text-dim);
+  border-radius: 34px;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px; width: 22px;
+  left: 4px; bottom: 4px;
+  background: var(--bg);
+  border-radius: 50%;
+  transition: .4s;
+}
+input:checked + .slider { background: var(--primary); }
+input:checked + .slider:before { transform: translateX(30px); }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: .3s;
+}
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* 卡片 */
+.health-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+.card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 25px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 30px rgba(0,0,0,.4);
+  transition: transform .3s;
+}
+.card:hover { transform: translateY(-5px); }
+.neon-border {
+  position: relative;
+}
+.neon-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  padding: 2px;
+  background: linear-gradient(90deg,var(--primary),var(--secondary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+
+.card h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+.card h2 i { margin-right: 10px; font-size: 1.3rem; }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.info-item:last-child { border-bottom: none; }
+.label { font-weight: 600; color: var(--primary); }
+.value { color: var(--text-dim); }
+
+/* 时间线 */
+.medical-timeline h2,
+.metrics-table h2 {
+  color: var(--primary);
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+}
+.medical-timeline h2 i,
+.metrics-table h2 i { margin-right: 10px; }
+
+.timeline {
+  border-left: 3px solid var(--primary);
+  padding-left: 25px;
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 25px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 5px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 10px var(--secondary);
+}
+.timeline-date {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+.timeline-content {
+  background: rgba(255,255,255,.05);
+  padding: 15px;
+  border-radius: 12px;
+}
+.timeline-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.timeline-desc { color: var(--text-dim); }
+
+/* 表格 */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255,255,255,.03);
+}
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  background: rgba(0,245,255,.1);
+  color: var(--primary);
+}
+tbody tr:hover {
+  background: rgba(255,255,255,.05);
+}
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: .8rem;
+  text-transform: uppercase;
+}
+.status.normal { background: rgba(40,167,69,.2); color: #28a745; }
+.status.warning { background: rgba(255,193,7,.2); color: #ffc107; }
+
+/* 页脚 */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-dim);
+  font-size: .9rem;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .health-cards { grid-template-columns: 1fr; }
+}
+
+/* 健康指标筛选和分页样式 */
+.filter-controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-input {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    color: var(--text-dim);
+}
+
+.page-btn {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 0 2px;
+}
+
+.page-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.page-btn.active {
+    background: var(--primary);
+    color: var(--bg);
+    border-color: var(--primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        justify-content: space-between;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+}

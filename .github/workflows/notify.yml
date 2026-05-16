@@ -1,0 +1,57 @@
+name: Notifications
+
+on:
+  workflow_run:
+    workflows: ["CI - 持续集成"]
+    types: [completed]
+
+jobs:
+  notify-failure:
+    name: 失败通知
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'failure'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get PR info
+        run: |
+          echo "CI 构建失败"
+          echo "触发分支: ${{ github.event.workflow_run.head_branch }}"
+          echo "触发提交: ${{ github.event.workflow_run.head_sha }}"
+          echo "运行 ID: ${{ github.event.workflow_run.id }}"
+
+      - name: Send Discord notification
+        if: false
+        run: |
+          echo "发送 Discord 通知..."
+          # curl -H "Content-Type: application/json" \
+          #   -d "{\"content\": \"CI 构建失败: ${{ github.event.workflow_run.name }}\"}" \
+          #   ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Create issue comment
+        if: false
+        run: |
+          echo "在相关 PR 上评论..."
+
+      - name: Upload failure logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-failure-logs
+          path: |
+            ${{ github.event.workflow_run.artifacts_url }}
+          retention-days: 7
+
+  notify-success:
+    name: 成功通知
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log success
+        run: |
+          echo "CI 构建成功: ${{ github.event.workflow_run.name }}"
+          echo "分支: ${{ github.event.workflow_run.head_branch }}"

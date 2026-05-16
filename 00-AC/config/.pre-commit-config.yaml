@@ -1,0 +1,72 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.(md|txt)$'
+      - id: end-of-file-fixer
+      - id: check-yaml
+        exclude: '^.trae/'
+      - id: check-json
+        exclude: '^.trae/'
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-executables-have-shebangs
+      - id: check-case-conflict
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.14
+    hooks:
+      - id: ruff
+        args: ["--fix", "--exit-non-zero-on-fix"]
+        exclude: '^.trae/'
+      - id: ruff-format
+        exclude: '^.trae/'
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.1
+    hooks:
+      - id: mypy
+        args: ["--strict", "--ignore-missing-imports"]
+        exclude: '^.trae/'
+        additional_dependencies: ["types-requests", "types-sqlalchemy"]
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: shellcheck
+        exclude: '^.trae/'
+
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ["-c", ".yamllint"]
+        exclude: '^.trae/'
+
+  - repo: local
+    hooks:
+      - id: update-docs
+        name: Update API Documentation
+        entry: python -m src.utils.doc_generator
+        language: python
+        files: 'src/.*\.py$'
+        pass_filenames: false
+        description: Automatically updates API documentation when code changes
+        exclude: '^.trae/'
+
+      - id: validate-contract
+        name: Validate Intent Contract
+        entry: python -m src.utils.intent_contract --validate
+        language: python
+        files: 'Hermes/Inbox/.*\.md$'
+        description: Validates intent contracts before commit
+
+      - id: check-scripts
+        name: Check Scripts
+        entry: python -m scripts.check_scripts
+        language: python
+        files: 'scripts/.*\.py$'
+        pass_filenames: false
+        description: Validates project scripts

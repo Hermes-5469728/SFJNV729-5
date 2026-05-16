@@ -1,0 +1,13 @@
+00-AC/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+*.db
+test_results.txt
+tests/_debug*.py
+tests/_debug*.txt
+tests/_test*_output.txt
+tests/ac_platform.db
+site/.tmp/
+.env

@@ -1,0 +1,94 @@
+# DADS Drug Database · National Expert Verified
+# Format: generic_name | class | aliases(comma) | primary_guideline_source | last_verified
+# All entries require: published guideline reference, peer-reviewed source
+# Modified by: authorized clinical pharmacists only
+# Version: 1.1 · Last updated: 2026-05-12
+# Database: SQLite | Table: drugs | Primary Key: generic_name
+
+aspirin | NSAID/antiplatelet | asa,阿司匹林 | ACC/AHA 2021 Coronary Disease | 2026-05-12
+warfarin | Anticoagulant | coumadin,华法林 | ACCP 2012 Antithrombotic 9th Ed | 2026-05
+metformin | Biguanide | glucophage,二甲双胍 | ADA 2025 Standards of Care | 2026-05
+lisinopril | ACE Inhibitor | prinivil,zestril,赖诺普利 | ACC/AHA 2017 HTN Guidelines | 2026-05
+amlodipine | CCB | norvasc,氨氯地平 | ESC/ESH 2024 HTN Guidelines | 2026-05
+hydrochlorothiazide | Thiazide Diuretic | hctz | JNC 8 / ACC/AHA 2017 | 2026-05
+spironolactone | Aldosterone Antagonist | aldactone,螺内酯 | ESC 2021 Heart Failure | 2026-05
+furosemide | Loop Diuretic | lasix,呋塞米 | ESC 2021 Heart Failure | 2026-05
+omeprazole | PPI | prilosec,奥美拉唑 | ACG 2022 PUD Guidelines | 2026-05
+pantoprazole | PPI | protonix,泮托拉唑 | ACG 2022 PUD Guidelines | 2026-05
+metoprolol | Beta Blocker | lopressor,toprol,美托洛尔 | ESC 2021 Heart Failure | 2026-05
+carvedilol | Beta Blocker | coreg | ESC 2021 Heart Failure | 2026-05
+bisoprolol | Beta Blocker | zebeta | ESC 2021 Heart Failure | 2026-05
+atorvastatin | Statin | lipitor,阿托伐他汀 | ACC/AHA 2018 Cholesterol | 2026-05
+rosuvastatin | Statin | crestor,瑞舒伐他汀 | ACC/AHA 2018 Cholesterol | 2026-05
+simvastatin | Statin | zocor | ACC/AHA 2018 Cholesterol | 2026-05
+levothyroxine | Thyroid Hormone | synthroid | ATA 2014 Hypothyroidism | 2026-05
+metronidazole | Antibiotic | flagyl,甲硝唑 | IDSA Guidelines | 2026-05
+fluconazole | Antifungal | diflucan,氟康唑 | IDSA Guidelines | 2026-05
+ibuprofen | NSAID | advil,motrin,布洛芬 | ACR Guidelines | 2026-05
+naproxen | NSAID | aleve | ACR Guidelines | 2026-05
+clopidogrel | Antiplatelet | plavix,氯吡格雷 | ACC/AHA 2021 CAD | 2026-05
+apixaban | Anticoagulant/DOAC | eliquis,阿哌沙班 | ASH 2020 VTE | 2026-05
+rivaroxaban | Anticoagulant/DOAC | xarelto,利伐沙班 | ASH 2020 VTE | 2026-05
+digoxin | Cardiac Glycoside | lanoxin,地高辛 | ESC 2021 Heart Failure | 2026-05
+amiodarone | Antiarrhythmic | cordarone,胺碘酮 | ESC 2020 Atrial Fibrillation | 2026-05
+sertraline | SSRI | zoloft | APA Practice Guidelines | 2026-05
+prednisone | Corticosteroid | deltasone | ACR Guidelines | 2026-05
+methotrexate | DMARD | mtx | ACR Guidelines | 2026-05
+allopurinol | Xanthine Oxidase Inhibitor | zyloprim,别嘌醇 | ACR Gout Guidelines | 2026-05
+insulin glargine | Long-acting Insulin | lantus | ADA 2025 Standards | 2026-05
+insulin aspart | Rapid-acting Insulin | novolog | ADA 2025 Standards | 2026-05
+glipizide | Sulfonylurea | glucotrol | ADA 2025 Standards | 2026-05
+pioglitazone | Thiazolidinedione | actos | ADA 2025 Standards | 2026-05
+empagliflozin | SGLT2 Inhibitor | jardiance | ADA 2025 Standards | 2026-05
+dapagliflozin | SGLT2 Inhibitor | farxiga | ADA 2025 Standards | 2026-05
+sitagliptin | DPP-4 Inhibitor | januvia | ADA 2025 Standards | 2026-05
+semaglutide | GLP-1 Agonist | ozempic | ADA 2025 Standards | 2026-05
+diltiazem | CCB | cardizem | ESC/ESH 2024 HTN | 2026-05
+verapamil | CCB | calan | ESC/ESH 2024 HTN | 2026-05
+losartan | ARB | cozaar | ACC/AHA 2017 HTN | 2026-05
+valsartan | ARB | diovan | ACC/AHA 2017 HTN | 2026-05
+telmisartan | ARB | micardis | ACC/AHA 2017 HTN | 2026-05
+nitroglycerin | Nitrate | nitro | ESC 2019 CCS | 2026-05
+isosorbide mononitrate | Nitrate | imdur | ESC 2019 CCS | 2026-05
+dabigatran | Anticoagulant/DOAC | pradaxa | ASH 2020 VTE | 2026-05
+edoxaban | Anticoagulant/DOAC | savaysa | ASH 2020 VTE | 2026-05
+enoxaparin | LMWH | lovenox,依诺肝素 | ASH 2020 VTE | 2026-05
+heparin | Anticoagulant | - | ACCP 2012 | 2026-05
+ceftriaxone | Cephalosporin 3rd Gen | rocephin | IDSA Guidelines | 2026-05
+cefazolin | Cephalosporin 1st Gen | ancef | IDSA Guidelines | 2026-05
+azithromycin | Macrolide | zithromax | IDSA Guidelines | 2026-05
+levofloxacin | Fluoroquinolone | levaquin | IDSA Guidelines | 2026-05
+ciprofloxacin | Fluoroquinolone | cipro | IDSA Guidelines | 2026-05
+amoxicillin | Penicillin | amoxil | IDSA Guidelines | 2026-05
+piperacillin-tazobactam | Penicillin/BLI | zosyn | IDSA Guidelines | 2026-05
+vancomycin | Glycopeptide | vancocin | IDSA Guidelines | 2026-05
+clindamycin | Lincosamide | cleocin | IDSA Guidelines | 2026-05
+doxycycline | Tetracycline | vibramycin | IDSA Guidelines | 2026-05
+trimethoprim-sulfamethoxazole | Sulfonamide | bactrim | IDSA Guidelines | 2026-05
+acyclovir | Antiviral | zovirax | IDSA Guidelines | 2026-05
+ondansetron | Antiemetic/5HT3 | zofran | ASCO Antiemesis | 2026-05
+metoclopramide | Antiemetic/D2 | reglan | ACG Guidelines | 2026-05
+famotidine | H2 Blocker | pepcid | ACG Guidelines | 2026-05
+loperamide | Antidiarrheal | imodium | ACG Guidelines | 2026-05
+albuterol | SABA | ventolin | GINA 2024 Asthma | 2026-05
+ipratropium | SAMA | atrovent | GOLD 2024 COPD | 2026-05
+fluticasone-salmeterol | ICS/LABA | advair | GINA 2024 Asthma | 2026-05
+montelukast | Leukotriene Antagonist | singulair | GINA 2024 Asthma | 2026-05
+oxycodone | Opioid | oxycontin | CDC Opioid Guidelines | 2026-05
+morphine | Opioid | - | CDC Opioid Guidelines | 2026-05
+tramadol | Opioid/SNRI | ultram | CDC Opioid Guidelines | 2026-05
+acetaminophen | Analgesic | tylenol,对乙酰氨基酚 | FDA | 2026-05
+gabapentin | Gabapentinoid | neurontin | AAN Guidelines | 2026-05
+pregabalin | Gabapentinoid | lyrica | AAN Guidelines | 2026-05
+duloxetine | SNRI | cymbalta | APA Guidelines | 2026-05
+fluoxetine | SSRI | prozac | APA Guidelines | 2026-05
+escitalopram | SSRI | lexapro | APA Guidelines | 2026-05
+alprazolam | Benzodiazepine | xanax | APA Guidelines | 2026-05
+diazepam | Benzodiazepine | valium | APA Guidelines | 2026-05
+lorazepam | Benzodiazepine | ativan | APA Guidelines | 2026-05
+quetiapine | Atypical Antipsychotic | seroquel | APA Guidelines | 2026-05
+olanzapine | Atypical Antipsychotic | zyprexa | APA Guidelines | 2026-05
+potassium chloride | Electrolyte | k-dur | FDA | 2026-05
+calcium carbonate | Calcium Supplement | tums | FDA | 2026-05
+ferrous sulfate | Iron Supplement | - | FDA | 2026-05
+thyroxine | Thyroid Hormone | synthroid | ATA 2014 Hypothyroidism | 2026-05

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AC Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div class="grid">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">AC Platform</div>
+        <span class="status-indicator" id="statusIndicator"></span>
+      </div>
+      <div class="header-right">
+        <select class="model-selector" id="modelSelector">
+          <option value="jarvis">Jarvis</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="qwen">Qwen</option>
+          <option value="ollama">Ollama</option>
+        </select>
+        <span id="connectionStatus">离线</span>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar-btn active" data-page="chat" title="聊天">💬</button>
+      <button class="sidebar-btn" data-page="projects" title="项目">📁</button>
+      <button class="sidebar-btn" data-page="monitor" title="监控">📊</button>
+      <button class="sidebar-btn" data-page="knowledge" title="知识">🧠</button>
+    </aside>
+
+    <!-- Tab Sidebar -->
+    <aside class="tab-sidebar">
+      <div class="tab-header">
+        <h3>会话</h3>
+        <button class="new-session-btn" id="newSessionBtn">+</button>
+      </div>
+      <div class="session-list" id="sessionList">
+        <!-- 会话列表由 JS 生成 -->
+      </div>
+      <div class="memory-panel">
+        <div class="memory-header">
+          <span class="memory-icon">🧠</span>
+          <span class="memory-count" id="memoryCount">已记住 0 件事</span>
+        </div>
+        <div class="memory-progress-bar">
+          <div class="memory-progress" id="memoryProgress" style="width: 0%"></div>
+        </div>
+        <div class="recent-topics">
+          <div class="recent-topics-title">最近话题</div>
+          <div id="recentTopics">
+            <!-- 话题标签由 JS 生成 -->
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Chat Page -->
+      <div id="page-chat" class="page active">
+        <div class="chat-messages" id="chatMessages">
+          <!-- 消息由 JS 生成 -->
+        </div>
+        <div class="chat-input-area">
+          <div class="input-wrapper">
+            <textarea class="chat-input" id="chatInput" placeholder="输入消息..." rows="1"></textarea>
+            <button class="send-btn" id="sendBtn">→</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects Page -->
+      <div id="page-projects" class="page">
+        <div class="projects-container" id="projectsContainer">
+          <!-- 项目卡片由 JS 生成 -->
+        </div>
+      </div>
+
+      <!-- Monitor Page -->
+      <div id="page-monitor" class="page">
+        <div class="monitor-container" id="monitorContainer">
+          <!-- 监控数据由 JS 生成 -->
+        </div>
+      </div>
+
+      <!-- Knowledge Page -->
+      <div id="page-knowledge" class="page">
+        <div class="knowledge-container">
+          <div class="search-bar">
+            <input type="text" class="search-input" id="knowledgeSearch" placeholder="搜索知识...">
+            <button class="search-btn" id="searchBtn">搜索</button>
+          </div>
+          <div class="knowledge-results" id="knowledgeResults">
+            <!-- 搜索结果由 JS 生成 -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>AC Platform v1.0 | 最后更新: <span id="lastUpdate">--</span></span>
+    </footer>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Core Libraries -->
+  <script src="core/events.js"></script>
+  <script src="core/api.js"></script>
+  <script>
+    // ===== 1. SessionStore =====
+    const SessionStore = (() => {
+      const STORAGE_KEY = 'ac_sessions'
+
+      function loadSessions() {
+        try {
+          const data = localStorage.getItem(STORAGE_KEY)
+          return data ? JSON.parse(data) : []
+        } catch {
+          return []
+        }
+      }
+
+      function saveSessions(sessions) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions))
+      }
+
+      function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+      }
+
+      return {
+        list() {
+          return loadSessions()
+        },
+        create(name) {
+          const now = Date.now()
+          const session = {
+            id: generateId(),
+            name: name || `会话 ${loadSessions().length + 1}`,
+            messages: [],
+            sessionId: null,
+            createdAt: now,
+            updatedAt: now
+          }
+          const sessions = loadSessions()
+          sessions.unshift(session)
+          saveSessions(sessions)
+          return session
+        },
+        save(updatedSession) {
+          const sessions = loadSessions()
+          const idx = sessions.findIndex(s => s.id === updatedSession.id)
+          if (idx > -1) {
+            sessions[idx] = { ...updatedSession, updatedAt: Date.now() }
+            saveSessions(sessions)
+          }
+        },
+        delete(id) {
+          const sessions = loadSessions().filter(s => s.id !== id)
+          saveSessions(sessions)
+        },
+        get(id) {
+          return loadSessions().find(s => s.id === id)
+        },
+        clear() {
+          localStorage.removeItem(STORAGE_KEY)
+        }
+      }
+    })()
+
+    // ===== 2. Store =====
+    const Store = (() => {
+      const state = {
+        activeSessionId: null,
+        userId: 'default',
+        currentModel: 'jarvis',
+        memories: [],
+        memoryStrength: 0,
+        healthStatus: { online: false, experts: 0, truths: 0 }
+      }
+      const listeners = {}
+
+      return {
+        state,
+        get(key) {
+          return state[key]
+        },
+        set(key, value) {
+          state[key] = value
+          this.notify(key)
+        },
+        on(key, fn) {
+          if (!listeners[key]) listeners[key] = []
+          listeners[key].push(fn)
+          return () => {
+            const idx = listeners[key].indexOf(fn)
+            if (idx > -1) listeners[key].splice(idx, 1)
+          }
+        },
+        notify(key) {
+          if (listeners[key]) {
+            listeners[key].forEach(fn => fn(state[key]))
+          }
+        }
+      }
+    })()
+
+    // ===== 3. Router =====
+    const Router = (() => {
+      function navigate(page) {
+        location.hash = page
+      }
+
+      function handleHashChange() {
+        const page = location.hash.slice(1) || 'chat'
+        
+        // 更新侧边栏状态
+        document.querySelectorAll('.sidebar-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.page === page)
+        })
+
+        // 切换页面显示
+        document.querySelectorAll('.page').forEach(p => {
+          p.classList.toggle('active', p.id === `page-${page}`)
+        })
+
+        // 触发页面初始化
+        EventBus.emit('page:change', page)
+      }
+
+      return {
+        init() {
+          window.addEventListener('hashchange', handleHashChange)
+          handleHashChange()
+        },
+        navigate
+      }
+    })()
+
+    // ===== 4. 消息相关函数 =====
+    function escapeHtml(text) {
+      const div = document.createElement('div')
+      div.textContent = text
+      return div.innerHTML
+    }
+
+    function renderContent(text) {
+      let html = escapeHtml(text)
+      // 代码块
+      html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+      // 行内代码
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>')
+      // 粗体
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      // 斜体
+      html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      // 换行
+      html = html.replace(/\n/g, '<br>')
+      return html
+    }
+
+    function formatTime(timestamp) {
+      const date = new Date(timestamp)
+      const now = new Date()
+      const diff = now - date
+      
+      if (diff < 60000) return '刚刚'
+      if (diff < 3600000) return `${Math.floor(diff / 60000)} 分钟前`
+      if (diff < 86400000) return `${Math.floor(diff / 3600000)} 小时前`
+      
+      return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
+    }
+
+    function addMessage(role, content, extra = {}) {
+      const chatMessages = document.getElementById('chatMessages')
+      const message = document.createElement('div')
+      message.className = `message ${role}`
+      
+      const avatar = document.createElement('div')
+      avatar.className = 'avatar'
+      avatar.textContent = role === 'user' ? 'U' : 'A'
+      
+      const contentDiv = document.createElement('div')
+      contentDiv.className = 'message-content'
+      contentDiv.innerHTML = `<p>${renderContent(content)}</p>`
+      
+      const timeDiv = document.createElement('div')
+      timeDiv.className = 'message-time'
+      timeDiv.textContent = formatTime(Date.now())
+      
+      contentDiv.appendChild(timeDiv)
+      message.appendChild(avatar)
+      message.appendChild(contentDiv)
+      chatMessages.appendChild(message)
+      
+      // 滚动到底部
+      chatMessages.scrollTop = chatMessages.scrollHeight
+    }
+
+    function showTyping() {
+      const chatMessages = document.getElementById('chatMessages')
+      const typingDiv = document.createElement('div')
+      typingDiv.className = 'message assistant'
+      typingDiv.innerHTML = `
+        <div class="avatar">A</div>
+        <div class="message-content">
+          <div class="typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      `
+      chatMessages.appendChild(typingDiv)
+      chatMessages.scrollTop = chatMessages.scrollHeight
+    }
+
+    function hideTyping() {
+      const chatMessages = document.getElementById('chatMessages')
+      const typingIndicator = chatMessages.querySelector('.typing-indicator')
+      if (typingIndicator) {
+        typingIndicator.closest('.message').remove()
+      }
+    }
+
+    async function handleSend() {
+      const input = document.getElementById('chatInput')
+      const query = input.value.trim()
+      
+      if (!query) return
+      
+      input.value = ''
+      input.style.height = '44px'
+      
+      const activeSessionId = Store.get('activeSessionId')
+      let session = SessionStore.get(activeSessionId)
+      
+      if (!session) {
+        session = SessionStore.create()
+        Store.set('activeSessionId', session.id)
+        renderSessions()
+      }
+      
+      // 确保有 sessionId
+      if (!session.sessionId) {
+        session.sessionId = 'user-' + Date.now().toString(36)
+        SessionStore.save(session)
+      }
+      
+      // 添加用户消息
+      addMessage('user', query)
+      session.messages.push({
+        role: 'user',
+        content: query,
+        time: Date.now()
+      })
+      SessionStore.save(session)
+      
+      // 显示打字状态
+      showTyping()
+      
+      // 调用 API
+      try {
+        const result = await APIClient.post('/api/chat', {
+          query,
+          userId: Store.get('userId'),
+          sessionId: session.sessionId,
+          model: Store.get('currentModel')
+        })
+        
+        if (result.ok) {
+          hideTyping()
+          const reply = result.data.response || '收到你的消息'
+          addMessage('assistant', reply)
+          
+          session.messages.push({
+            role: 'assistant',
+            content: reply,
+            time: Date.now(),
+            ...result.data
+          })
+          SessionStore.save(session)
+          
+          // 触发更新
+          EventBus.emit('message:sent')
+        } else {
+          throw new Error(result.error)
+        }
+      } catch (e) {
+        hideTyping()
+        showToast('消息发送失败: ' + e.message, 'error')
+        addMessage('assistant', '抱歉，发生了错误，请稍后重试。')
+      }
+    }
+
+    // ===== 5. 页面渲染函数 =====
+    function renderSessions() {
+      const sessionList = document.getElementById('sessionList')
+      const sessions = SessionStore.list()
+      
+      if (sessions.length === 0) {
+        sessionList.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-secondary); font-size: 13px;">暂无会话</div>'
+        return
+      }
+      
+      sessionList.innerHTML = sessions.map(session => `
+        <div class="session-item ${session.id === Store.get('activeSessionId') ? 'active' : ''}" data-session-id="${session.id}">
+          <div class="session-name">${escapeHtml(session.name)}</div>
+          <div class="session-time">${formatTime(session.updatedAt)}</div>
+        </div>
+      `).join('')
+      
+      // 添加点击事件
+      sessionList.querySelectorAll('.session-item').forEach(item => {
+        item.addEventListener('click', () => {
+          Store.set('activeSessionId', item.dataset.sessionId)
+          renderSessions()
+          renderChatMessages()
+        })
+      })
+    }
+
+    function renderChatMessages() {
+      const chatMessages = document.getElementById('chatMessages')
+      const activeSessionId = Store.get('activeSessionId')
+      const session = SessionStore.get(activeSessionId)
+      
+      if (!session || !session.messages.length) {
+        chatMessages.innerHTML = `
+          <div style="flex: 1; display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+            <div style="text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 16px;">💬</div>
+              <div>开始新对话</div>
+              <div style="font-size: 13px; margin-top: 8px; opacity: 0.6;">输入消息开始聊天</div>
+            </div>
+          </div>
+        `
+        return
+      }
+      
+      chatMessages.innerHTML = session.messages.map(msg => `
+        <div class="message ${msg.role}">
+          <div class="avatar">${msg.role === 'user' ? 'U' : 'A'}</div>
+          <div class="message-content">
+            <p>${renderContent(msg.content)}</p>
+            <div class="message-time">${formatTime(msg.time)}</div>
+          </div>
+        </div>
+      `).join('')
+      
+      chatMessages.scrollTop = chatMessages.scrollHeight
+    }
+
+    function renderMemoryPanel() {
+      const sessions = SessionStore.list()
+      const memories = Store.get('memories')
+      
+      // 计算记忆强度
+      const strength = calcStrength(memories, sessions)
+      Store.set('memoryStrength', strength)
+      
+      document.getElementById('memoryCount').textContent = `已记住 ${memories.length} 件事`
+      document.getElementById('memoryProgress').style.width = `${Math.min(strength, 100)}%`
+      
+      // 显示最近话题
+      const recentTopics = memories.slice(-3).map(m => m.title || m.content?.substring(0, 15) + '...')
+      document.getElementById('recentTopics').innerHTML = recentTopics.map(topic => 
+        `<span class="topic-tag">${escapeHtml(topic)}</span>`
+      ).join('') || '<span style="color: var(--text-secondary); font-size: 11px;">暂无话题</span>'
+    }
+
+    function calcStrength(memories, sessions) {
+      const recentCount = memories.filter(m => (Date.now()/1000 - (m.created_at || Date.now()/1000)) < 3*86400).length
+      const totalCount = memories.length
+      const avgConf = memories.reduce((s, m) => s + (m.confidence || 0), 0) / (totalCount || 1)
+      return Math.min(100, recentCount * 15 + totalCount * 5 + avgConf * 10 + sessions.length * 3)
+    }
+
+    // Mock 项目数据
+    const mockProjects = [
+      { id: 1, name: '医疗知识库', desc: '专业医疗知识问答系统', tags: ['医疗', 'RAG'], icon: '🏥' },
+      { id: 2, name: '个人数据中心', desc: '个人数据管理与分析平台', tags: ['数据', '存储'], icon: '🗂️' },
+      { id: 3, name: '智能助手', desc: '多模态AI助手集成', tags: ['AI', '助手'], icon: '🤖' },
+      { id: 4, name: '项目管理', desc: '任务看板与进度追踪', tags: ['管理', '看板'], icon: '📋' },
+      { id: 5, name: '知识图谱', desc: '语义知识关联网络', tags: ['图谱', 'AI'], icon: '🔗' },
+      { id: 6, name: '安全审计', desc: '内容安全检测与过滤', tags: ['安全', '审计'], icon: '🛡️' }
+    ]
+
+    function renderProjectsPage() {
+      const container = document.getElementById('projectsContainer')
+      container.innerHTML = `
+        <div class="projects-grid">
+          ${mockProjects.map(project => `
+            <div class="project-card">
+              <div class="project-icon">${project.icon}</div>
+              <div class="project-name">${escapeHtml(project.name)}</div>
+              <div class="project-desc">${escapeHtml(project.desc)}</div>
+              <div class="project-tags">
+                ${project.tags.map(tag => `<span class="project-tag">${escapeHtml(tag)}</span>`).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `
+    }
+
+    async function renderMonitorPage() {
+      const container = document.getElementById('monitorContainer')
+      
+      // 先显示骨架屏
+      container.innerHTML = `
+        <div class="monitor-grid">
+          <div class="monitor-card skeleton"><div class="skeleton-line short"></div></div>
+          <div class="monitor-card skeleton"><div class="skeleton-line short"></div></div>
+          <div class="monitor-card skeleton"><div class="skeleton-line short"></div></div>
+          <div class="monitor-card skeleton"><div class="skeleton-line short"></div></div>
+        </div>
+        <div class="knowledge-section skeleton" style="height: 200px;"></div>
+      `
+      
+      try {
+        const result = await APIClient.get('/api/health')
+        const health = result.ok ? result.data : { online: false, experts: 0, truths: 0, dispatch_count: 0 }
+        
+        Store.set('healthStatus', health)
+        
+        container.innerHTML = `
+          <div class="monitor-grid">
+            <div class="monitor-card ${health.online ? 'green' : 'red'}">
+              <div class="monitor-card-header">服务状态</div>
+              <div class="monitor-card-value">${health.online ? '在线' : '离线'}</div>
+            </div>
+            <div class="monitor-card green">
+              <div class="monitor-card-header">专家数量</div>
+              <div class="monitor-card-value">${health.experts || 0}</div>
+            </div>
+            <div class="monitor-card yellow">
+              <div class="monitor-card-header">知识库条目</div>
+              <div class="monitor-card-value">${health.truths || 0}</div>
+            </div>
+            <div class="monitor-card">
+              <div class="monitor-card-header">调度次数</div>
+              <div class="monitor-card-value">${health.dispatch_count || 0}</div>
+            </div>
+          </div>
+          <div class="knowledge-section">
+            <h3>最近知识</h3>
+            <div class="knowledge-list">
+              ${[
+                { title: '架构决策记录', score: 95 },
+                { title: '医疗指南更新', score: 88 },
+                { title: '系统配置变更', score: 92 },
+                { title: '安全策略升级', score: 98 }
+              ].map(item => `
+                <div class="knowledge-item">
+                  <span class="knowledge-title">${escapeHtml(item.title)}</span>
+                  <span class="knowledge-score">${item.score}%</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `
+      } catch {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+            <div style="font-size: 32px; margin-bottom: 16px;">⚠️</div>
+            <div>无法获取监控数据</div>
+          </div>
+        `
+      }
+    }
+
+    function renderKnowledgePage() {
+      const results = document.getElementById('knowledgeResults')
+      results.innerHTML = `
+        <div class="knowledge-card">
+          <div class="knowledge-card-title">AC Platform 架构概述</div>
+          <div class="knowledge-card-content">
+            AC Platform 是一个多模态AI平台，支持多种模型接入、会话管理、知识检索等功能。
+            采用微服务架构设计，具备良好的扩展性和可维护性。
+          </div>
+          <div class="knowledge-card-meta">
+            <span>类型: 架构文档</span>
+            <span>评分: 95%</span>
+          </div>
+        </div>
+        <div class="knowledge-card">
+          <div class="knowledge-card-title">会话管理模块</div>
+          <div class="knowledge-card-content">
+            支持多会话管理，每个会话拥有独立的上下文和记忆。会话数据持久化存储在 localStorage，
+            确保刷新页面后会话不丢失。
+          </div>
+          <div class="knowledge-card-meta">
+            <span>类型: 功能文档</span>
+            <span>评分: 88%</span>
+          </div>
+        </div>
+        <div class="knowledge-card">
+          <div class="knowledge-card-title">治理管道说明</div>
+          <div class="knowledge-card-content">
+            治理管道包含四级检查：G0格式验证、G1内容安全、G2事实核查、G3幻觉审计。
+            所有内容必须通过检查才能返回给用户。
+          </div>
+          <div class="knowledge-card-meta">
+            <span>类型: 安全文档</span>
+            <span>评分: 92%</span>
+          </div>
+        </div>
+      `
+    }
+
+    // ===== 6. 工具函数 =====
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer')
+      const toast = document.createElement('div')
+      toast.className = `toast ${type}`
+      toast.textContent = message
+      container.appendChild(toast)
+      
+      setTimeout(() => {
+        toast.remove()
+      }, 3000)
+    }
+
+    function updateOnlineStatus() {
+      const isOnline = navigator.onLine
+      const statusIndicator = document.getElementById('statusIndicator')
+      const connectionStatus = document.getElementById('connectionStatus')
+      
+      statusIndicator.classList.toggle('offline', !isOnline)
+      connectionStatus.textContent = isOnline ? '在线' : '离线'
+      connectionStatus.style.color = isOnline ? 'var(--green)' : '#ef4444'
+      
+      if (!isOnline) {
+        showToast('网络连接已断开', 'error')
+      }
+    }
+
+    async function checkHealth() {
+      try {
+        const result = await APIClient.get('/api/health')
+        if (result.ok) {
+          Store.set('healthStatus', { ...result.data, online: true })
+          document.getElementById('statusIndicator').classList.remove('offline')
+          document.getElementById('connectionStatus').textContent = '在线'
+          document.getElementById('connectionStatus').style.color = 'var(--green)'
+        }
+      } catch {
+        Store.set('healthStatus', { online: false, experts: 0, truths: 0 })
+      }
+    }
+
+    // ===== 7. 初始化 =====
+    function init() {
+      // 初始化路由
+      Router.init()
+      
+      // 加载会话
+      const sessions = SessionStore.list()
+      if (sessions.length > 0) {
+        Store.set('activeSessionId', sessions[0].id)
+      } else {
+        // 创建默认会话
+        const session = SessionStore.create()
+        Store.set('activeSessionId', session.id)
+      }
+      
+      // 渲染会话列表
+      renderSessions()
+      
+      // 渲染聊天消息
+      renderChatMessages()
+      
+      // 渲染记忆面板
+      renderMemoryPanel()
+      
+      // 设置事件监听
+      EventBus.on('page:change', (page) => {
+        if (page === 'chat') {
+          renderChatMessages()
+        } else if (page === 'projects') {
+          renderProjectsPage()
+        } else if (page === 'monitor') {
+          renderMonitorPage()
+        } else if (page === 'knowledge') {
+          renderKnowledgePage()
+        }
+      })
+      
+      EventBus.on('message:sent', () => {
+        renderMemoryPanel()
+        checkHealth()
+      })
+      
+      // 侧边栏点击事件
+      document.querySelectorAll('.sidebar-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          Router.navigate(btn.dataset.page)
+        })
+      })
+      
+      // 新建会话
+      document.getElementById('newSessionBtn').addEventListener('click', () => {
+        const session = SessionStore.create()
+        Store.set('activeSessionId', session.id)
+        renderSessions()
+        renderChatMessages()
+        Router.navigate('chat')
+      })
+      
+      // 发送消息
+      const chatInput = document.getElementById('chatInput')
+      const sendBtn = document.getElementById('sendBtn')
+      
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault()
+          handleSend()
+        }
+      })
+      
+      sendBtn.addEventListener('click', handleSend)
+      
+      // 文本域自适应高度
+      chatInput.addEventListener('input', () => {
+        chatInput.style.height = 'auto'
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 200) + 'px'
+      })
+      
+      // 模型切换
+      document.getElementById('modelSelector').addEventListener('change', (e) => {
+        Store.set('currentModel', e.target.value)
+        showToast(`已切换到 ${e.target.options[e.target.selectedIndex].text}`, 'success')
+      })
+      
+      // 知识搜索
+      document.getElementById('searchBtn').addEventListener('click', () => {
+        const query = document.getElementById('knowledgeSearch').value
+        if (query) {
+          showToast(`搜索: ${query}`, 'success')
+        }
+      })
+      
+      // 离线检测
+      window.addEventListener('online', updateOnlineStatus)
+      window.addEventListener('offline', updateOnlineStatus)
+      updateOnlineStatus()
+      
+      // 定时检查健康状态
+      checkHealth()
+      setInterval(checkHealth, 30000)
+      
+      // 更新时间
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-CN')
+    }
+
+    // DOM 加载完成后初始化
+    document.addEventListener('DOMContentLoaded', init)
+  </script>
+</body>
+</html>

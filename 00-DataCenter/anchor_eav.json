@@ -1,0 +1,92 @@
+[
+  {
+    "anchor_id": "A001",
+    "source_text": "任务拆解: 递归式任务树生成。能将模糊需求拆解为有向无环图，包含子任务依赖、并行执行路径",
+    "entity": "任务生成系统",
+    "attribute": "功能",
+    "value": "递归拆解模糊需求为有向无环图，包含子任务依赖和并行执行路径",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A002",
+    "source_text": "工具定义: 严格的契约定义。所有CLI工具都有严格的Input/Output Schema，AI必须输出符合Schema的JSON才能调用",
+    "entity": "CLI工具接口规范",
+    "attribute": "要求",
+    "value": "严格Input/Output Schema，AI必须输出符合Schema的JSON才能调用",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A003",
+    "source_text": "状态机管理: 全生命周期状态机。具备13态管理",
+    "entity": "状态机",
+    "attribute": "状态管理能力",
+    "value": "13态管理（CREATED→COMPLETED）",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A004",
+    "source_text": "干预模式: 异步HITL。AI在执行关键节点时自动挂起，通过CLI或Web界面请求人类批准",
+    "entity": "AI执行流程",
+    "attribute": "关键节点行为",
+    "value": "自动挂起，通过CLI或Web界面请求人类批准",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A005",
+    "source_text": "经验沉淀: 失败案例库。将每次失败的执行路径、错误原因、最终解决方案存入向量数据库",
+    "entity": "错误处理机制",
+    "attribute": "存储内容",
+    "value": "失败执行路径、错误原因、最终解决方案存入向量数据库",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A006",
+    "source_text": "网络请求: HTTP/gRPC必须用requests/httpx/aiohttp",
+    "entity": "网络请求实现",
+    "attribute": "允许的库",
+    "value": "requests/httpx/aiohttp，严禁自研",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A007",
+    "source_text": "折腾：自己写异步任务队列支持优先级/重试/死信，其实for循环就够",
+    "entity": "异步任务队列实现",
+    "attribute": "实践评价",
+    "value": "自己写复杂队列（优先级/重试/死信）实则简单循环足够（反面）",
+    "polarity": "negative",
+    "notes": "反面示例"
+  },
+  {
+    "anchor_id": "A008",
+    "source_text": "过度设计：工厂模式滥用，写ToolFactory支持动态注册，其实只有5个工具",
+    "entity": "设计模式应用",
+    "attribute": "实践评价",
+    "value": "工厂模式滥用，仅5个工具却做动态注册（反面）",
+    "polarity": "negative",
+    "notes": "反面示例"
+  },
+  {
+    "anchor_id": "A009",
+    "source_text": "状态机引擎: 13态管理，用状态模式或状态字典映射，明确定义状态跳转条件",
+    "entity": "13态管理实现",
+    "attribute": "要求",
+    "value": "使用状态模式或状态字典映射，明确定义状态跳转条件",
+    "polarity": "positive",
+    "notes": "确认"
+  },
+  {
+    "anchor_id": "A010",
+    "source_text": "全链路追踪: 每次LLM调用的Prompt/输出/Token/耗时全部存入数据库",
+    "entity": "LLM调用记录",
+    "attribute": "存储内容",
+    "value": "Prompt/输出/Token/耗时全部存入数据库",
+    "polarity": "positive",
+    "notes": "确认"
+  }
+]

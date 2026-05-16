@@ -1,0 +1,24 @@
+{
+  "message_id": "msg-20260512-handshake",
+  "sender": "opencode",
+  "receiver": "trae",
+  "timestamp": "2026-05-12T19:15:00",
+  "type": "handshake",
+  "content": {
+    "action": "request_context",
+    "question": "请 Trae 确认收到握手消息，并同步它当前的上下文信息：",
+    "requested_info": [
+      "当前正在处理的任务",
+      "对 Atelier 架构的理解程度",
+      "已完成的工作",
+      "待处理的任务",
+      "需要 OpenCode 协助的事项"
+    ],
+    "protocol_version": "1.0",
+    "bridge_ready": true
+  },
+  "metadata": {
+    "priority": "high",
+    "expires_at": "2026-05-12T20:00:00"
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "e25de345b6dec3c1",
+    "type": "split",
+    "children": [
+      {
+        "id": "6d91759e65220ec6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ebc2332ea7064b1a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/项目交接文档.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "项目交接文档"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "147c449b5fb21f95",
+    "type": "split",
+    "children": [
+      {
+        "id": "f5f066ba4ded446c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4f9395d7d0233e04",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "f04a96b1b1885d63",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "862e68189d786c86",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "3a72b5c0bf1a60f6",
+    "type": "split",
+    "children": [
+      {
+        "id": "cc62c96311be2f64",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c678748b1b70665b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "图书馆/MULTI-CLI-AI-WORKFLOW-ARCHITECTURE.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "MULTI-CLI-AI-WORKFLOW-ARCHITECTURE 的反向链接列表"
+            }
+          },
+          {
+            "id": "7e410693d8e989a4",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "图书馆/MULTI-CLI-AI-WORKFLOW-ARCHITECTURE.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "MULTI-CLI-AI-WORKFLOW-ARCHITECTURE 的出链列表"
+            }
+          },
+          {
+            "id": "7d024bc0e5e198dd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "1c82e160c0f38c28",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "b215c9df0ddda716",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "图书馆/MULTI-CLI-AI-WORKFLOW-ARCHITECTURE.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "MULTI-CLI-AI-WORKFLOW-ARCHITECTURE 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "ebc2332ea7064b1a",
+  "lastOpenFiles": [
+    "Hermes_AC/欢迎.md",
+    "Hermes_AC",
+    "图书馆/ORCHESTRATOR-EVALUATION.md",
+    "图书馆/MULTI-CLI-AI-WORKFLOW-ARCHITECTURE.md",
+    "图书馆/DATA-PIPELINE-ARCHITECTURE.md",
+    "_归档待审/README.md",
+    "projects/_dc_reorg/系统/01-架构哲学/记忆与进化.md",
+    "projects/_dc_reorg/系统/01-架构哲学/编排与认知核心.md",
+    "projects/_dc_reorg/系统/01-架构哲学/绝对颗粒度评估·造轮子前的灵魂三问.md",
+    "projects/_dc_reorg/系统/01-架构哲学/绝对颗粒度评估·核心业务价值（底盘 vs 轮胎）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/绝对颗粒度评估·抽象层级（克制 vs 过度设计）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/绝对颗粒度评估·性能与掌控度（微操 vs 折腾）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/绝对颗粒度评估·可维护性（资产 vs 负债）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/治理与质量控制.md",
+    "projects/_dc_reorg/系统/01-架构哲学/核心架构模块（赛车底盘·必须自研）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/架构哲学：造赛车引擎而非重复造轮子.md",
+    "projects/_dc_reorg/系统/01-架构哲学/数据闭环（赛车遥测系统）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/技术栈选型（赛车工具箱）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/执行与工具链.md",
+    "projects/_dc_reorg/系统/01-架构哲学/工程化规范（交通规则）.md",
+    "projects/_dc_reorg/系统/01-架构哲学/失忆预防铁律：数据库schema版本控制.md",
+    "projects/_dc_reorg/系统/01-架构哲学/单人效能指标.md",
+    "projects/_dc_reorg/系统/01-架构哲学/人机交互.md",
+    "projects/_dc_reorg/系统/05-医学",
+    "projects/_dc_reorg/系统/04-AI架构",
+    "projects/_dc_reorg/系统/03-专家库",
+    "projects/_dc_reorg/系统/02-技术规范",
+    "projects/_dc_reorg/系统/01-架构哲学",
+    "projects/_dc_reorg/案例/05-个人",
+    "projects/_dc_reorg/案例/04-沟通记录",
+    "projects/_dc_reorg/案例/03-心理学",
+    "projects/_dc_reorg/案例/02-经济学",
+    "projects/DataCenter/00-未分类/默认真值 · 过渡期的心理生存指南.md",
+    "projects/DataCenter/00-未分类/默认真值 · 社会系统视角.md",
+    "projects/DataCenter/00-未分类/默认真值 · 社会三层模型.md",
+    "projects/DataCenter/00-未分类/默认真值 · 桥接型资本积累策略.md",
+    "projects/personal-site/themes/PaperMod/images/tn.png",
+    "projects/personal-site/themes/PaperMod/images/screenshot.png"
+  ]
+}

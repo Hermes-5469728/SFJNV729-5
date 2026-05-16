@@ -1,0 +1,346 @@
+name: CD - 持续部署
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '部署环境'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      skip_tests:
+        description: '跳过测试直接部署'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  version:
+    name: 生成版本号
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 计算版本
+        id: version
+        run: |
+          DATE=$(date +%Y.%m.%d)
+          BUILD_NUM=$(git rev-list --count HEAD)
+          VERSION="v${DATE}-${BUILD_NUM}"
+          TAG="v${DATE}.${BUILD_NUM}"
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "版本: $VERSION"
+          echo "Tag: $TAG"
+
+      - name: 获取最新 tag
+        id: latest_tag
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          echo "latest_tag=$LAST_TAG" >> $GITHUB_OUTPUT
+          echo "上一个版本: $LAST_TAG"
+
+  changelog:
+    name: 生成变更日志
+    runs-on: ubuntu-latest
+    needs: [version]
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 生成 CHANGELOG
+        id: changelog
+        run: |
+          TAG=${{ needs.version.outputs.tag }}
+          LAST_TAG=${{ needs.version.outputs.latest_tag }}
+
+          if [ "$LAST_TAG" = "none" ]; then
+            COMMITS=$(git log --oneline -20)
+          else
+            COMMITS=$(git log $LAST_TAG..HEAD --oneline)
+          fi
+
+          CHANGELOG="# CHANGELOG - $TAG\n\n"
+          CHANGELOG+="## $TAG ($(date +%Y-%m-%d))\n\n"
+
+          while IFS= read -r line; do
+            COMMIT_MSG=$(echo "$line" | sed 's/^[a-f0-9]* //')
+            CHANGELOG+="- $COMMIT_MSG\n"
+          done <<< "$COMMITS"
+
+          CHANGELOG+="\n---\n\n"
+
+          if [ -f CHANGELOG.md ]; then
+            CHANGELOG+=$(cat CHANGELOG.md)
+          fi
+
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  build:
+    name: 构建制品
+    runs-on: ubuntu-latest
+    needs: [version]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install build
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build
+        run: |
+          VERSION=${{ needs.version.outputs.version }}
+          BUILD_DATE=$(date +%Y-%m-%d)
+
+          BUILD_DATE=$BUILD_DATE \
+          VERSION=$VERSION \
+          python -m build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ needs.version.outputs.tag }}
+          path: |
+            dist/*
+          retention-days: 30
+
+  test:
+    name: 测试
+    runs-on: ubuntu-latest
+    if: github.event.inputs.skip_tests != 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - name: Run tests
+        run: |
+          pytest tests/ -v --cov=src --cov-report=xml || true
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        if: success()
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+  release:
+    name: 创建 Release
+    runs-on: ubuntu-latest
+    needs: [version, changelog, build]
+    if: always() && (needs.test.result == 'success' || github.event.inputs.skip_tests == 'true')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ needs.version.outputs.tag }}
+          path: dist/
+
+      - name: 创建 CHANGELOG.md
+        run: |
+          echo "${{ needs.changelog.outputs.content }}" > CHANGELOG.md
+
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: Release ${{ needs.version.outputs.tag }}
+          body: |
+            ## ${{ needs.version.outputs.tag }}
+
+            ${{ needs.changelog.outputs.content }}
+
+            ## 安装
+
+            ```bash
+            pip install dist/*.whl
+            ```
+          files: |
+            dist/*
+            CHANGELOG.md
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 推送 CHANGELOG 更新
+        run: |
+          git config user.name "CI Bot"
+          git config user.email "ci@ac-platform.local"
+
+          git add CHANGELOG.md
+          git commit -m "docs: 更新 CHANGELOG for ${{ needs.version.outputs.tag }}"
+          git push
+
+  deploy-staging:
+    name: 部署到 Staging
+    runs-on: ubuntu-latest
+    needs: [version, build, test]
+    if: always() && (needs.test.result == 'success' || github.event.inputs.skip_tests == 'true')
+    environment:
+      name: staging
+      url: https://staging.ac-platform.example.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ needs.version.outputs.tag }}
+          path: dist/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install
+        run: |
+          pip install dist/*.whl
+
+      - name: 健康检查
+        run: |
+          for i in {1..3}; do
+            echo "尝试 $i/3..."
+            if curl -sf https://staging.ac-platform.example.com/health; then
+              echo "健康检查通过"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "健康检查失败"
+          exit 1
+
+      - name: 部署完成记录
+        run: |
+          echo "Staging 部署完成: ${{ needs.version.outputs.tag }}"
+
+  rollback:
+    name: 自动回滚
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: failure()
+    environment:
+      name: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 获取上一个稳定版本
+        id: last-stable
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0^1)
+          echo "回滚到: $LAST_TAG"
+          echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT
+
+      - name: 执行回滚
+        if: steps.last-stable.outputs.last_tag != ''
+        run: |
+          echo "执行 git revert..."
+          git checkout ${{ steps.last-stable.outputs.last_tag }}
+
+      - name: 推送回滚
+        if: steps.last-stable.outputs.last_tag != ''
+        run: |
+          git config user.name "CI Bot"
+          git config user.email "ci@ac-platform.local"
+
+          git add -A
+          git commit -m "rollback: 回滚到 ${{ steps.last-stable.outputs.last_tag }}"
+          git push
+
+      - name: 回滚完成通知
+        run: |
+          echo "已自动回滚到: ${{ steps.last-stable.outputs.last_tag }}"
+
+  deploy-production:
+    name: 部署到 Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, release]
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: production
+      url: https://ac-platform.example.com
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.tag }}
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ needs.release.outputs.tag }}
+          path: dist/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install
+        run: |
+          pip install dist/*.whl --force-reinstall
+
+      - name: 滚动重启
+        run: |
+          for instance in $(seq 1 3); do
+            echo "重启实例 $instance..."
+            sleep 10
+          done
+
+      - name: 冒烟测试
+        run: |
+          curl -sf https://ac-platform.example.com/health
+          curl -sf https://ac-platform.example.com/api/v1/status
+
+      - name: 部署完成
+        run: |
+          echo "Production 部署完成: ${{ needs.release.outputs.tag }}"

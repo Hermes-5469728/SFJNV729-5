@@ -1,0 +1,57 @@
+=== GHOST LOCATIONS ===
+
+G1: ac_server.py:302
+  File: {PROJECT_ROOT}\ac_server.py
+  Line 302: governance_passed = True
+  Context: /dispatch endpoint claims governance passed without actual governance call
+  Code: 
+    governance_passed = True
+
+G2: ac_server.py:378-402, 405-424
+  File: {PROJECT_ROOT}\ac_server.py
+  Line 378: # [已切除] ... 
+  Line 382: from subagent_integration import SubAgentIntegration, SubAgentTaskType
+  Line 408: from subagent_integration import SubAgentIntegration, SubAgentTaskType
+  Context: Dead functions marked "cut" still import SubAgent
+
+G3: unified_dispatcher.py:79, 163-166, 203-241, 279-285
+  File: {PROJECT_ROOT}\unified_dispatcher.py
+  Line 79: self.subagent_executor = SubAgentExecutor()
+  Line 163-166: Routes code/arch/doc to SubAgent instead of AC
+  Line 203-241: _execute_with_subagent() — SubAgent execution logic
+  Line 284-285: Governance fails silently: return {"passed": True}
+
+G4: orchestrator.py:719, 739-751
+  File: {PROJECT_ROOT}\orchestrator.py
+  Line 719: result = await self._simulate_dispatch(graph, step)
+  Line 739-751: _simulate_dispatch — returns fake success
+
+G5: db.py:125-140
+  File: {PROJECT_ROOT}\db.py
+  Line 125-139: save_truth() — direct INSERT INTO ac_truth
+  No L5 validation, no verification chain
+
+G6: ac_bus.py — entire file
+  File: {PROJECT_ROOT}\ac_bus.py
+  No LEGITIMATE_SENDERS whitelist anywhere
+  publish() at line 167 accepts any source
+
+G7: projects/sdk/adapters/ac_adapter.py:44-53
+  File: {PROJECT_ROOT}\00-AC\projects\sdk\adapters\ac_adapter.py
+  Line 48: if method == "router_dispatch":
+  Line 50-51: self.router.route(text) → self.router.call(target, ...)
+  Bypasses ALL AC governance, routes directly to LLM
+
+G8: projects/PersonalDataCenter/sdk/dual_track_router.py:60-94
+  File: {PROJECT_ROOT}\00-AC\projects\PersonalDataCenter\sdk\dual_track_router.py
+  Lines 60-94: dispatch() — independent routing with own middleware/permissions
+  Also: app.py:125-140 exposes this via HTTP POST /track/{track_type}/route/{path}
+
+G9: projects/src/core/gaia_defense.py:129-185
+  File: {PROJECT_ROOT}\00-AC\projects\src\core\gaia_defense.py
+  GaiaDefensePipeline.process() — keyword/regex defense, NOT full AC governance
+  No encoding check, no semantic check, no hallucination auditor
+
+P1 (Phantom): ac_bus.py:89
+  Line 89: "guard.store_truth() → 发布 TRUTH_STORED → KnowledgeService 订阅 → 刷新缓存"
+  Function guard.store_truth() does NOT exist in guard.py

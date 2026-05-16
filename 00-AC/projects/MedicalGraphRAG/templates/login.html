@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康知识平台 - 登录</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: #0a0a1a; position: relative; overflow: hidden;
+            font-family: 'Noto Sans SC', sans-serif; color: #e0f0ff;
+        }
+        body::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(0,245,255,.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0,245,255,.03) 1px, transparent 1px);
+            background-size: 50px 50px; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0%{transform:translate(0,0)} 100%{transform:translate(50px,50px)} }
+        body::after {
+            content: ''; position: absolute; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,245,255,.08) 0%, transparent 70%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none;
+        }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
+        .login-container { position: relative; z-index: 2; width: 100%; max-width: 440px; padding: 20px; }
+        .login-box {
+            background: rgba(255,255,255,.05); backdrop-filter: blur(20px);
+            border-radius: 22px; padding: 45px 35px; box-shadow: 0 15px 50px rgba(0,0,0,.4);
+            border: 1px solid rgba(0,245,255,.12); animation: fadeIn .8s ease-out;
+        }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(25px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+        .login-header { text-align: center; margin-bottom: 35px; }
+        .login-header .icon-wrap {
+            width: 80px; height: 80px; margin: 0 auto 18px;
+            background: linear-gradient(135deg, rgba(0,245,255,.15), rgba(255,0,255,.1));
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(0,245,255,.2);
+        }
+        .login-header .icon-wrap i {
+            font-size: 36px; background: linear-gradient(135deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .login-header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px;
+            background: linear-gradient(135deg, #00f5ff, #e0f0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .login-header p { color: #8a9ba8; font-size: 14px; }
+        .login-form { display: flex; flex-direction: column; gap: 22px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-weight: 500; font-size: 14px; color: rgba(0,245,255,.8); }
+        .input-with-icon { position: relative; }
+        .input-with-icon i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: rgba(0,245,255,.5); font-size: 16px; transition: .3s; z-index: 2; }
+        .input-with-icon input {
+            width: 100%; padding: 15px 16px 15px 48px; border: 1px solid rgba(0,245,255,.15);
+            border-radius: 12px; background: rgba(255,255,255,.04); color: #e0f0ff;
+            font-size: 15px; font-family: inherit; transition: .3s; outline: none;
+        }
+        .input-with-icon input::placeholder { color: rgba(255,255,255,.25); }
+        .input-with-icon input:focus { border-color: #00f5ff; background: rgba(0,245,255,.04); box-shadow: 0 0 0 3px rgba(0,245,255,.1); }
+        .login-btn {
+            margin-top: 8px; padding: 16px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #00f5ff, #ff00ff); color: #000;
+            font-size: 16px; font-weight: 700; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px; cursor: pointer; transition: .4s; position: relative; overflow: hidden;
+        }
+        .login-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,245,255,.35); }
+        .login-btn::after { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); transition:left .6s; }
+        .login-btn:hover::after { left: 100%; }
+        .login-footer { margin-top: 28px; text-align: center; }
+        .login-footer p { margin: 8px 0; color: #8a9ba8; font-size: 14px; }
+        .login-footer a { color: rgba(0,245,255,.7); text-decoration: none; font-weight: 500; transition: .3s; }
+        .login-footer a:hover { color: #00f5ff; }
+        .flash-messages { margin-bottom: 18px; }
+        .flash { padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; font-weight: 500; text-align: center; font-size: 14px; animation: slideIn .4s ease; }
+        @keyframes slideIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+        .flash.success { background: rgba(46,204,113,.12); color: #2ecc71; border: 1px solid rgba(46,204,113,.25); }
+        .flash.error { background: rgba(255,107,107,.12); color: #ff6b6b; border: 1px solid rgba(255,107,107,.25); }
+        @media (max-width: 480px) { .login-container{padding:15px} .login-box{padding:30px 22px} .login-header h1{font-size:20px} }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="icon-wrap"><i class="fas fa-brain"></i></div>
+                <h1>AI 健康助手</h1>
+                <p>智能健康知识推送平台</p>
+            </div>
+            <form class="login-form" method="POST" action="{{ url_for('login') }}">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+                <div class="form-group">
+                    <label for="phone">手机号</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                        <input type="text" id="phone" name="phone" placeholder="请输入您的手机号" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">登 录</button>
+                <div class="login-footer">
+                    <p>还没有账号？<a href="{{ url_for('register') }}">立即注册</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                particles: { number:{value:60,density:{enable:true,value_area:900}}, color:{value:"#00f5ff"}, shape:{type:"circle"}, opacity:{value:0.3,random:true}, size:{value:2,random:true}, line_linked:{enable:true,distance:150,color:"#00f5ff",opacity:0.15,width:1}, move:{enable:true,speed:1,direction:"none",random:true,out_mode:"out"} },
+                interactivity: { events:{onhover:{enable:true,mode:"grab"},onclick:{enable:true,mode:"push"}}, modes:{grab:{distance:140,line_linked:{opacity:0.5}},push:{particles_nb:3}} },
+                retina_detect: true
+            });
+        }
+        document.getElementById('phone').addEventListener('input', function() { this.value = this.value.replace(/\D/g, '').substring(0, 11); });
+    });
+    </script>
+</body>
+</html>

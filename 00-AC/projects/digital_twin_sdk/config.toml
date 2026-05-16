@@ -1,0 +1,42 @@
+# DADS 插件配置文件
+# 支持两种模式：personal（个人端/保命模式）或 medical（医疗端/救人模式）
+
+[dads]
+# 运行模式: "personal" 或 "medical"
+dads_mode = "personal"
+
+# 知识库路径
+knowledge_base_path = "./knowledge"
+
+# 模型服务端点
+model_endpoint = "http://localhost:8080"
+
+# 向量数据库配置
+[vector_db]
+# 支持: "lancedb" 或 "sqlite"
+storage_type = "lancedb"
+connection_string = "./data/vectors"
+
+# 权限控制配置（可选）
+[auth]
+# 是否启用权限检查
+enabled = true
+model_path = "./config/rbac_model.conf"
+policy_path = "./config/rbac_policy.csv"
+
+# 日志配置
+[log]
+level = "info"
+output = "stdout"
+
+# 性能配置
+[performance]
+# 向量检索返回数量
+top_k = 5
+# 并发请求数
+max_concurrent = 10
+
+# 未来可扩展的第三种模式预留配置
+# [research]
+# enabled = false
+# knowledge_bases = ["医学文献", "临床试验数据", "研究方法论"]

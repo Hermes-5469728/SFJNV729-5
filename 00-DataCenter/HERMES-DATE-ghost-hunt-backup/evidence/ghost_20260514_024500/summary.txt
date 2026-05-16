@@ -1,0 +1,28 @@
+发现时间：2026-05-14 02:45 CST
+发现方式：全领域猎鬼行动 · 静态代码审查 + 运行时动态验证
+
+共发现 9 只鬼 + 1 个幻影函数
+
+判定为 P0 的鬼:
+  G1. ac_server.py:302 — governance_passed 硬编码为 True，无实际治理
+  G7. projects/sdk/adapters/ac_adapter.py:48 — router_dispatch 绕过 AC 直接调 LLM
+
+判定为 P1 的鬼:
+  G3. unified_dispatcher.py — 内置 SubAgentExecutor，分流代码任务绕过 AC
+  G4. orchestrator.py:739 — _simulate_dispatch 模拟 dispatch，不调 real dispatch
+  G5. db.py:125 — save_truth 直接 INSERT INTO ac_truth，无 L5 验证
+  G6. ac_bus.py — 缺少 LEGITIMATE_SENDERS 白名单
+  G8. projects/PersonalDataCenter/sdk/dual_track_router.py — 影子路由系统
+  G2. ac_server.py:378-424 — 标记"已切除"仍保留 SubAgent 导入
+
+判定为 P2 的鬼:
+  G9. projects/src/core/gaia_defense.py — 简化防御管道替代完整 AC 治理
+
+幻影:
+  P1. ac_bus.py:89 — 引用 guard.store_truth() 但函数不存在
+
+关键运行时发现:
+  - CLI 和 Server 对相同查询 "焦虑" 返回不同结果
+  - CLI: matched=[心理医生]; Server: matched=[] (unclassified)
+  - Server 的 governance_passed 永远为 true
+  - 两个 ac_server 实例: :8000 和 :8001

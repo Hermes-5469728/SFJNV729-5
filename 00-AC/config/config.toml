@@ -1,0 +1,22 @@
+# AC · 配置
+# 新电脑: 复制仓库后只编辑此文件
+
+[user]
+name = "Hermes"
+mode = "free"
+
+[paths]
+# 数据库路径（默认：仓库根目录的 ac_platform.db）
+db_path = "ac_platform.db"
+
+[defaults]
+lease_rounds = 3
+psychologist_lease = 5
+max_active_workers = 2
+
+[priority_order]
+P1 = "安全"
+P2 = "权益"
+P3 = "心理"
+P4 = "技术"
+P5 = "通用"

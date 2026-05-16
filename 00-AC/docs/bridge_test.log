@@ -1,0 +1,43 @@
+2026-05-12 19:11:39.792 | INFO     | __main__:run_test:16 - ============================================================
+2026-05-12 19:11:39.793 | INFO     | __main__:run_test:17 - AI沟通桥测试开始
+2026-05-12 19:11:39.793 | INFO     | __main__:run_test:18 - ============================================================
+2026-05-12 19:11:39.794 | INFO     | __main__:run_test:21 - 
+[1/5] 初始化组件
+2026-05-12 19:11:39.795 | INFO     | communication_bridge.api_gateway:__init__:50 - A2A网关初始化完成
+2026-05-12 19:11:39.795 | INFO     | communication_bridge.security:__init__:43 - 安全管理器初始化完成
+2026-05-12 19:11:39.796 | INFO     | communication_bridge.agent_connector:__init__:33 - Agent连接器初始化完成
+2026-05-12 19:11:39.796 | INFO     | __main__:run_test:35 - ✓ 网关初始化完成
+2026-05-12 19:11:39.796 | INFO     | __main__:run_test:36 - ✓ 安全管理器初始化完成
+2026-05-12 19:11:39.797 | INFO     | __main__:run_test:37 - ✓ 连接器初始化完成
+2026-05-12 19:11:39.797 | INFO     | __main__:run_test:38 - ✓ A2A协议初始化完成
+2026-05-12 19:11:39.797 | INFO     | __main__:run_test:41 - 
+[2/5] 创建Agent身份
+2026-05-12 19:11:39.798 | INFO     | communication_bridge.security:create_identity:59 - 创建身份: 代码Agent (agent-7494791b)
+2026-05-12 19:11:39.799 | INFO     | communication_bridge.security:create_identity:59 - 创建身份: 评审Agent (agent-671add76)
+2026-05-12 19:11:39.799 | INFO     | communication_bridge.security:create_identity:59 - 创建身份: 执行Agent (agent-9dcc3a8e)
+2026-05-12 19:11:39.800 | INFO     | __main__:run_test:46 - ✓ 代码Agent: agent-7494791b
+2026-05-12 19:11:39.800 | INFO     | __main__:run_test:47 - ✓ 评审Agent: agent-671add76
+2026-05-12 19:11:39.801 | INFO     | __main__:run_test:48 - ✓ 执行Agent: agent-9dcc3a8e
+2026-05-12 19:11:39.801 | INFO     | __main__:run_test:51 - 
+[3/5] 注册端点
+2026-05-12 19:11:39.802 | INFO     | communication_bridge.api_gateway:register_endpoint:60 - 端点注册: agent-7494791b -> http://localhost:8000/coder
+2026-05-12 19:11:39.802 | INFO     | communication_bridge.api_gateway:register_endpoint:60 - 端点注册: agent-671add76 -> http://localhost:8000/reviewer
+2026-05-12 19:11:39.802 | INFO     | communication_bridge.api_gateway:register_endpoint:60 - 端点注册: agent-9dcc3a8e -> http://localhost:8000/executor
+2026-05-12 19:11:39.803 | INFO     | communication_bridge.agent_connector:connect:45 - 已连接: agent-7494791b -> http://localhost:8000/coder
+2026-05-12 19:11:39.803 | INFO     | communication_bridge.agent_connector:connect:45 - 已连接: agent-671add76 -> http://localhost:8000/reviewer
+2026-05-12 19:11:39.804 | INFO     | communication_bridge.agent_connector:connect:45 - 已连接: agent-9dcc3a8e -> http://localhost:8000/executor
+2026-05-12 19:11:39.804 | INFO     | __main__:run_test:60 - ✓ 所有端点已注册
+2026-05-12 19:11:39.804 | INFO     | __main__:run_test:63 - 
+[4/5] 创建安全群组
+2026-05-12 19:11:39.805 | INFO     | communication_bridge.security:create_group:91 - 创建群组: 开发小组 (group-4fd4cd98)
+2026-05-12 19:11:39.805 | INFO     | __main__:run_test:65 - ✓ 开发小组创建: group-4fd4cd98
+2026-05-12 19:11:39.806 | INFO     | __main__:run_test:68 - 
+[5/5] 测试消息路由
+2026-05-12 19:11:39.806 | INFO     | __main__:run_test:82 - ✓ 创建消息: caaf7e4e-8fc0-4cf9-903b-44afed94c38c
+2026-05-12 19:11:39.806 | INFO     | __main__:run_test:86 - ✓ 消息路由完成: completed
+2026-05-12 19:11:39.807 | INFO     | __main__:run_test:102 - ✓ 响应消息路由完成: completed
+2026-05-12 19:11:39.807 | INFO     | __main__:run_test:106 - ✓ 任务消息历史: 2 条
+2026-05-12 19:11:39.808 | INFO     | __main__:run_test:108 - 
+============================================================
+2026-05-12 19:11:39.808 | INFO     | __main__:run_test:109 - AI沟通桥测试完成
+2026-05-12 19:11:39.809 | INFO     | __main__:run_test:110 - ============================================================

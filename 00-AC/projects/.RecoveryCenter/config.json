@@ -1,0 +1,27 @@
+
+{
+    "name": "隐蔽数据中心",
+    "description": "用于原始数据备份和恢复的隐蔽存储中心",
+    "version": "1.0.0",
+    "created_at": "2026-05-11",
+    "security_level": "HIGH",
+    "auto_backup": {
+        "enabled": false,
+        "schedule": "daily",
+        "time": "02:00"
+    },
+    "retention_policy": {
+        "max_backups": 30,
+        "max_age_days": 90
+    },
+    "encryption": {
+        "enabled": false,
+        "algorithm": "AES-256"
+    },
+    "directories": {
+        "backups": "backups",
+        "metadata": "metadata",
+        "tools": "tools",
+        "logs": "logs"
+    }
+}

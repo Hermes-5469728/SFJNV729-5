@@ -1,0 +1,7 @@
+# AC 运行时依赖（极简）
+# Python 3.10+ 即可运行核心功能（dispatch/annotate/seed）
+# pandas + transformers 仅用于 QA 评测管线，非必需
+
+pandas>=3.0.0          # 仅 qa/ 评测需要
+transformers>=4.40.0   # 仅 PPL 质量过滤（离线无网络也可）
+torch>=2.0.0           # transformers 依赖

@@ -1,0 +1,20 @@
+---
+title: 绝对颗粒度评估·性能与掌控度（微操 vs 折腾）
+category: architecture
+source: architecture_analysis
+verified: true
+tags: 绝对真值,评估标准,代码规范
+created: 2026-05-13T03:59:44.163298+00:00
+---
+
+# 绝对颗粒度评估·性能与掌控度（微操 vs 折腾）
+
+折腾（立刻停止，回退到开源库）:
+- 自己写异步任务队列支持优先级/重试/死信，其实for循环就够
+- 为性能自写JSON解析器，比orjson快0.1ms但引入3个Bug
+- 为解耦引入消息队列RabbitMQ/Kafka，其实只有一个消费者
+
+微操（坚持自研，这是护城河）:
+- Prompt组装: 自写字符串拼接精确控制Token和Few-Shot插入
+- 流式输出处理: 自写async for让UI打字机效果极致丝滑
+- 沙箱交互: 自写Docker SDK封装，追求100ms内完成读写执行

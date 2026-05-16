@@ -1,0 +1,20 @@
+---
+title: 绝对颗粒度评估·可维护性（资产 vs 负债）
+category: architecture
+source: architecture_analysis
+verified: true
+tags: 绝对真值,评估标准,代码规范
+created: 2026-05-13T03:59:44.163298+00:00
+---
+
+# 绝对颗粒度评估·可维护性（资产 vs 负债）
+
+负债（技术债务温床）:
+- 魔法数字: time.sleep(5)/if status==3，必须用常量/枚举代替
+- 深层嵌套: if套for套try套if超过4层，必须拆分成小函数
+- 隐式依赖: 函数依赖全局变量但看不出来，必须参数传递
+
+资产（可持续迭代代码）:
+- 类型注解: 所有函数签名有Type Hints，Python工业化底线
+- 单元测试: 核心逻辑（状态机/数据解析）有测试，20%覆盖也是资产
+- 文档字符串: 复杂函数有Docstring解释为什么这么写而非写了什么

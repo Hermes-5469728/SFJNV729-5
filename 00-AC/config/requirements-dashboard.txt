@@ -1,0 +1,5 @@
+# WebSocket 实时推送
+pip install websockets
+
+# 前端 Dashboard（可选）
+pip install fastapi uvicorn

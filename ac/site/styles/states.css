@@ -1,0 +1,109 @@
+button, .btn, .model-btn, .send-btn {
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+button:hover:not(:disabled),
+.btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+button:active:not(:disabled),
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button:focus-visible,
+.btn:focus-visible,
+.model-btn:focus-visible,
+.send-btn:focus-visible,
+.chat-input:focus-visible,
+.search-box:focus-visible,
+.textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button:disabled,
+.btn:disabled,
+.model-btn:disabled,
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+button[aria-busy="true"],
+.btn[aria-busy="true"] {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+button[aria-busy="true"]::after,
+.btn[aria-busy="true"]::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+[data-state="error"],
+.status-error {
+  color: var(--red);
+  border-color: rgba(239,68,68,0.3);
+}
+
+input:disabled,
+textarea:disabled,
+.chat-input:disabled,
+.search-box:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+[data-state="error"] input,
+[data-state="error"] textarea {
+  border-color: var(--red);
+}
+
+.model-btn.active {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+.model-btn.active:hover {
+  opacity: 0.9 !important;
+}
+
+input, textarea, .chat-input, .search-box, select {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+
+input:hover:not(:disabled),
+textarea:hover:not(:disabled),
+.chat-input:hover:not(:disabled),
+.search-box:hover:not(:disabled) {
+  border-color: var(--border-hover);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+.chat-input:focus-visible,
+.search-box:focus-visible,
+select:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}

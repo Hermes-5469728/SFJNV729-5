@@ -1,0 +1,24 @@
+# DADS Clinical Guidelines · National Expert Verified
+# Format: condition | guideline_source_year | key_point | evidence_level | last_verified
+# Evidence: A=multipleRCTs, B=singleRCT, C=observational, D=expert_consensus
+# Modified by: authorized attending physicians only
+# Version: 1.1 · Last updated: 2026-05-12
+# Database: SQLite | Table: guidelines | Primary Key: condition,guideline_source_year
+
+Hypertension | ACC/AHA 2017 | Diagnosis: clinic >=130/80, home >=130/80. First-line: ACEi/ARB, CCB, thiazide. Target <130/80. | A | 2026-05-12
+Hypertension | China 2024 | Diagnosis: clinic >=140/90, home >=135/85. First-line as above. Target <140/90 general, <130/80 DM/CKD. | A | 2026-05
+Hypertension | ESC/ESH 2024 | Lower targets recommended. Initial combination therapy for most patients. Spironolactone as 4th line. | A | 2026-05
+Type 2 Diabetes | ADA 2025 | Metformin + lifestyle first-line. HbA1c <7.0% individualize. SGLT2i/GLP-1RA if CVD/CKD/HF. | A | 2026-05
+Type 2 Diabetes | China 2024 | FPG>=7.0 or HbA1c>=6.5% diagnostic. Metformin first. Insulin if HbA1c>9% or symptomatic hyperglycemia. | A | 2026-05
+COPD | GOLD 2025 | FEV1/FVC<0.7 post-BD diagnostic. Group A: SABA/SAMA. Group B: LABA/LAMA. Group E: LABA+LAMA, +ICS if EOS>=300. | A | 2026-05
+Heart Failure HFrEF | ESC 2021 | Quadruple therapy: ARNI/ACEi + BB + MRA + SGLT2i. Titrate to target doses. | A | 2026-05
+Heart Failure HFpEF | ESC 2021 | SGLT2i (empagliflozin/dapagliflozin) + diuretics for congestion. | A | 2026-05
+Acute Coronary Syndrome | ESC 2023 | DAPT 12mo post-ACS (aspirin + ticagrelor/prasugrel preferred over clopidogrel). High-dose statin. BB if LV dysfunction. | A | 2026-05
+Atrial Fibrillation | ESC 2024 | CHA2DS2-VASc score for stroke risk. OAC if >=2 (men) or >=3 (women). DOAC preferred over VKA. Rate vs rhythm control individualized. | A | 2026-05
+Ischemic Stroke | AHA/ASA 2019 | IV alteplase 0.9mg/kg within 4.5h of onset. BP <185/110 pre-thrombolysis. Mechanical thrombectomy if LVO within 24h. | A | 2026-05
+AKI | KDIGO | Scr rise >=26.5umol/L in 48h or >=1.5x baseline in 7d. Stage 1-3. Stop nephrotoxins. Assess fluid status. | A | 2026-05
+CKD | KDIGO 2024 | eGFR <60 or ACR >30 for 3mo+. SGLT2i for all eGFR>20. BP target <130/80. Avoid nephrotoxins. | A | 2026-05
+CAP | IDSA/ATS 2019 | CURB-65 severity scoring. Outpatient: amoxicillin or doxycycline. Inpatient non-ICU: beta-lactam + macrolide. | A | 2026-05
+Peptic Ulcer Disease | ACG 2022 | Test for H.pylori (urea breath test or stool antigen). Triple therapy 14d. PPI 4-8 weeks. | A | 2026-05
+VTE | ASH 2020 | Initial: LMWH or DOAC. Provoked: 3mo anticoagulation. Unprovoked: consider extended. Cancer-associated: LMWH or DOAC >=6mo. | A | 2026-05
+Hyperlipidemia | ACC/AHA 2018 | High-intensity statin if ASCVD risk >=7.5% (10yr). target LDL-C reduction >=50%. Add ezetimibe then PCSK9i if not at goal. | A | 2026-05

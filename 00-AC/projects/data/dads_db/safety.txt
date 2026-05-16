@@ -1,0 +1,41 @@
+# DADS Drug Safety Database · Pregnancy/Lactation/Hepatic/Renal
+# Format: drug | pregnancy_category | lactation | hepatic_impairment | renal_impairment | source
+# Pregnancy categories: A=controlled studies show no risk, B=animal studies no risk, C=animal studies show risk, D=human evidence of risk, X=contraindicated
+# Lactation: Compatible / Caution / Avoid / Unknown
+# Hepatic impairment: Safe / Caution / Reduce dose / Avoid / Unknown
+# Renal impairment: Safe / Caution / Reduce dose / Contraindicated / Unknown
+# Source: FDA labeling, Briggs Drugs in Pregnancy and Lactation, AASLD guidelines
+# Version: 1.1 · Last updated: 2026-05-12
+# Database: SQLite | Table: safety | Primary Key: drug
+
+aspirin | D (3rd trimester X) | Caution (avoid 3rd trimester) | Caution (avoid if severe) | Safe (low dose) | FDA Aspirin Label §8.1
+warfarin | X | Compatible | Safe | Safe | FDA Warfarin Label §8.1
+metformin | B | Compatible | Avoid if acute liver failure | Contraindicated if eGFR<30 | ADA 2025 §12
+lisinopril | D | Avoid | Caution | Reduce dose if CrCl<30 | FDA Lisinopril Label §8.1
+amlodipine | C | Compatible | Safe | Safe | FDA Amlodipine Label §8.1
+hydrochlorothiazide | B | Compatible (may reduce milk supply) | Caution (hepatic encephalopathy risk) | Monitor if eGFR<30 | FDA HCTZ Label §8.1
+spironolactone | C | Compatible | Avoid if severe | Avoid if CrCl<30 or K+>5.0 | FDA Spironolactone Label §8.1
+furosemide | C | Compatible | Caution (hepatic encephalopathy risk) | Safe (higher doses in renal failure) | FDA Furosemide Label §8.1
+omeprazole | B | Compatible | Safe | Safe | FDA Omeprazole Label §8.1
+pantoprazole | B | Compatible | Safe | Safe | FDA Pantoprazole Label §8.1
+metoprolol | C | Compatible | Reduce dose (high first-pass in cirrhosis) | Safe | FDA Metoprolol Label §8.1
+carvedilol | C | Compatible | Reduce dose in cirrhosis | Safe | FDA Carvedilol Label §8.1
+bisoprolol | C | Compatible | Reduce dose in severe | Reduce dose if CrCl<40 | FDA Bisoprolol Label §8.1
+atorvastatin | X | Avoid | Caution (monitor LFTs) | Safe | FDA Atorvastatin Label §8.1
+rosuvastatin | X | Avoid | Avoid if active liver disease | Reduce dose if CrCl<30 | FDA Rosuvastatin Label §8.1
+simvastatin | X | Avoid | Avoid if active liver disease | Reduce dose if CrCl<30 | FDA Simvastatin Label §8.1
+levothyroxine | A | Compatible | Safe | Safe | ATA 2017 Pregnancy Guidelines
+metronidazole | B (avoid 1st trimester if possible) | Caution (pump + dump 12-24h after single dose) | Reduce dose in severe | Safe | FDA Metronidazole Label §8.1
+fluconazole | D (single 150mg dose is C) | Compatible (single dose) | Safe (single dose) | Reduce dose if CrCl<50 | FDA Fluconazole Label §8.1
+ibuprofen | C (D after 30 weeks) | Compatible | Avoid if severe cirrhosis (HRS risk) | Avoid if eGFR<30 | FDA Ibuprofen Label §8.1
+naproxen | C (D after 30 weeks) | Compatible | Avoid if severe cirrhosis | Avoid if eGFR<30 | FDA Naproxen Label §8.1
+clopidogrel | B | Unknown | Safe | Safe | FDA Clopidogrel Label §8.1
+apixaban | B | Unknown | Caution (Child-Pugh B: use with caution; C: avoid) | Reduce to 2.5mg BID if CrCl 15-29 | FDA Apixaban Label §8.1
+rivaroxaban | C | Avoid | Avoid if Child-Pugh B or C | Reduce to 15mg QD if CrCl 15-50 | FDA Rivaroxaban Label §8.1
+digoxin | C | Compatible | Safe | Reduce dose 50% if CrCl<20 | FDA Digoxin Label §8.1
+amiodarone | D | Avoid | Safe (but monitor LFTs) | Safe | FDA Amiodarone Label §8.1
+sertraline | C | Compatible (preferred SSRI in lactation) | Reduce dose in severe | Safe | FDA Sertraline Label §8.1
+prednisone | C | Compatible | Safe | Safe | FDA Prednisone Label §8.1
+methotrexate | X | Contraindicated | Contraindicated if chronic liver disease | Reduce dose if CrCl<60 | FDA Methotrexate Label §8.1
+allopurinol | C | Compatible | Safe | Reduce dose if CrCl<20 | FDA Allopurinol Label §8.1
+insulin glargine | B (preferred: insulin aspart/lispro in pregnancy) | Compatible | Reduce dose (decreased hepatic gluconeogenesis) | Reduce dose if eGFR<30 | ADA 2025 §12

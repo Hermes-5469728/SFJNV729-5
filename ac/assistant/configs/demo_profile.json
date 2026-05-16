@@ -1,0 +1,65 @@
+{
+  "identity": {
+    "user_id": "demo",
+    "name": "Demo User",
+    "aliases": [],
+    "role": "user",
+    "group": "default",
+    "tenant": "default"
+  },
+  "preferences": {
+    "tone": "technical",
+    "length": "normal",
+    "format": "markdown",
+    "language": "zh-CN",
+    "temperature": 0.7,
+    "verbosity": 5,
+    "emoji_enabled": false,
+    "code_highlight": true,
+    "auto_correct": true,
+    "expert_auto_select": true
+  },
+  "behavior": [],
+  "knowledge": {
+    "domains": [],
+    "max_context_tokens": 4096,
+    "truth_min_confidence": 0.6
+  },
+  "memory": {
+    "max_session_history": 100,
+    "long_term_enabled": true,
+    "decay_days": 30,
+    "topics_auto_extract": true,
+    "vector_search_enabled": false
+  },
+  "safety": {
+    "priority_map": {
+      "P1": "安全",
+      "P2": "权益",
+      "P3": "心理",
+      "P4": "技术",
+      "P5": "通用"
+    },
+    "sensitivity_filters": [],
+    "governance_required": true,
+    "governance_skip_domains": []
+  },
+  "scheduling": {
+    "slots": [
+      {
+        "day_of_week": -1,
+        "time_window": "00:00-23:59",
+        "max_requests": 100,
+        "cooldown_seconds": 1
+      }
+    ],
+    "rate_limit": 60,
+    "max_tokens_per_minute": 100000
+  },
+  "routing": {
+    "preferred_experts": [],
+    "expert_overrides": {},
+    "bypass_experts": [],
+    "default_expert": "通用助手"
+  }
+}

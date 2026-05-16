@@ -1,0 +1,1938 @@
+:root {
+  --primary: #3498db;
+  --secondary: #9b59b6;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --info: #00cec9;
+  --dark: #1a1a2e;
+  --darker: #16213e;
+  --light: #f8f9fa;
+  --text: #e2e2e2;
+  --accent-1: #ff9ff3;
+  --accent-2: #feca57;
+  --accent-3: #ff6b6b;
+  --accent-4: #48dbfb;
+  --accent-5: #1dd1a1;
+}
+
+/* 基础样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+  width: 280px;
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.hospital-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hospital-logo i {
+  font-size: 28px;
+  color: var(--accent-4);
+  background: linear-gradient(135deg, var(--accent-4), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hospital-logo h2 {
+  font-weight: 700;
+  font-size: 20px;
+  background: linear-gradient(to right, var(--accent-4), var(--accent-5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-group {
+  margin-bottom: 25px;
+}
+
+.nav-title {
+  padding: 10px 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--accent-4), var(--primary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active:before {
+  opacity: 1;
+}
+
+.nav-link i {
+  margin-right: 12px;
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  color: var(--accent-4);
+}
+
+.nav-link span {
+  flex: 1;
+}
+
+.nav-link:hover {
+  transform: translateX(5px);
+}
+
+.sidebar-footer {
+  padding: 15px 20px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+/* 主内容区样式 */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(26, 26, 46, 0.5);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+}
+
+.search-box i {
+  margin-right: 10px;
+  color: var(--accent-4);
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  outline: none;
+  width: 250px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-info i {
+  font-size: 18px;
+  color: var(--accent-4);
+  cursor: pointer;
+  position: relative;
+}
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-4), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.user-details {
+  line-height: 1.3;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 内容区域样式 */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.content-header {
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease;
+}
+
+.content-header h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, var(--accent-4), var(--accent-5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.content-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+}
+
+/* 统计卡片 */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 15px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  background: rgba(72, 219, 251, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  font-size: 24px;
+  color: var(--accent-4);
+}
+
+.stat-info h3 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  color: var(--accent-4);
+}
+
+.stat-info p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+/* 操作区域 */
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.action-left, .action-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.records-count {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.records-count strong {
+  color: var(--accent-4);
+}
+
+/* 按钮样式 */
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--accent-4);
+  color: var(--accent-4);
+}
+
+.btn-outline:hover {
+  background: rgba(72, 219, 251, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-4), var(--primary));
+  color: white;
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+}
+
+/* 表格样式 */
+.table-wrapper {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin-bottom: 25px;
+  animation: slideUp 0.5s ease;
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text);
+}
+
+.patients-table th {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--accent-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.patients-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.patients-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.patients-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.user-id {
+  font-family: 'Courier New', monospace;
+  color: var(--accent-4);
+  font-weight: 600;
+}
+
+.user-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar-small {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-4), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+/* 徽章样式 */
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-gender {
+  background: rgba(155, 89, 182, 0.2);
+  color: var(--secondary);
+  border: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.badge-blood {
+  background: rgba(231, 76, 60, 0.2);
+  color: var(--danger);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* 健康状态 */
+.health-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-indicator.positive {
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.status-indicator.warning {
+  background: var(--warning);
+  box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+/* 操作按钮 */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.btn-icon.view {
+  background: rgba(46, 204, 113, 0.1);
+  color: var(--success);
+}
+
+.btn-icon.view:hover {
+  background: rgba(46, 204, 113, 0.2);
+  transform: scale(1.1);
+}
+
+.btn-icon.edit {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--primary);
+}
+
+.btn-icon.edit:hover {
+  background: rgba(52, 152, 219, 0.2);
+  transform: scale(1.1);
+}
+
+.btn-icon.delete {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--danger);
+}
+
+.btn-icon.delete:hover {
+  background: rgba(231, 76, 60, 0.2);
+  transform: scale(1.1);
+}
+
+/* 分页样式 */
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pagination .btn {
+  padding: 8px 14px;
+  min-width: 40px;
+  justify-content: center;
+}
+
+.pagination .btn.active {
+  background: var(--accent-4);
+  color: white;
+  border-color: var(--accent-4);
+}
+
+/* 模态框样式 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: rgba(26, 26, 46, 0.95);
+  margin: 5% auto;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  animation: slideUp 0.5s ease;
+}
+
+.modal-header {
+  padding: 20px 30px;
+  background: rgba(77, 179, 211, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  background: linear-gradient(to right, var(--accent-4), var(--accent-5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close:hover {
+  color: var(--accent-4);
+}
+
+.modal-body {
+  padding: 30px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 20px 30px;
+  background: rgba(26, 26, 46, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* 用户详情样式 */
+.user-profile {
+  color: var(--text);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-4), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+}
+
+.profile-info h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: var(--accent-4);
+}
+
+.profile-info p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.detail-section {
+  margin-bottom: 25px;
+}
+
+.detail-section h4 {
+  color: var(--accent-4);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.detail-item span {
+  font-weight: 500;
+  color: var(--text);
+}
+
+
+.health-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.health-tag {
+  background: rgba(231, 76, 60, 0.2);
+  color: var(--danger);
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.health-data {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.data-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.data-item label {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+}
+
+.data-value {
+  font-weight: 600;
+  color: var(--accent-4);
+}
+
+/* 动画定义 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 80px;
+  }
+  .sidebar-header, .nav-title, .nav-link span {
+    display: none;
+  }
+  .nav-link {
+    justify-content: center;
+    padding: 15px;
+  }
+  .nav-link i {
+    margin-right: 0;
+    font-size: 20px;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  .search-box {
+    width: 100%;
+  }
+  .content-area {
+    padding: 15px;
+  }
+  .stats-cards {
+  display: none !important;
+}
+  .dashboard-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .action-left, .action-right {
+    width: 100%;
+    justify-content: center;
+  }
+  .pagination {
+    justify-content: center;
+  }
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+  }
+}
+/* 在文件末尾添加以下样式 */
+
+/* 表单网格样式 */
+/* 确保表单网格适应更多字段 */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 5% auto;
+  }
+}
+/* 添加表单分区样式 */
+.form-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-4);
+}
+
+.form-section h3 {
+  margin-bottom: 15px;
+  color: var(--accent-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+/* 健康指标表格样式 */
+#edit-metrics-table {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#edit-metrics-table th {
+    background: rgba(72, 219, 251, 0.1);
+    border: none;
+    color: var(--accent-4);
+    font-weight: 600;
+    padding: 12px 8px;
+}
+
+#edit-metrics-table td {
+    padding: 10px 8px;
+    border-color: rgba(255, 255, 255, 0.1);
+    vertical-align: middle;
+}
+
+#edit-metrics-table tr:hover {
+    background: rgba(72, 219, 251, 0.05);
+}
+
+/* 指标状态标签 */
+.badge-success {
+    background: #28a745;
+    color: white;
+}
+
+.badge-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+/* 空状态样式 */
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* 知识图谱样式 */
+#kg-network-container {
+    background: rgba(26, 26, 46, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.empty-graph-message,
+.error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-graph-message i,
+.error-message i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-graph-message h3,
+.error-message h3 {
+    color: var(--accent-4);
+    margin-bottom: 0.5rem;
+}
+
+/* 响应式表格 */
+.table-responsive {
+    border-radius: 8px;
+}
+
+/* 按钮组样式 */
+.btn-group-vertical .btn {
+    margin-bottom: 5px;
+}
+
+.btn-group-vertical .btn:last-child {
+    margin-bottom: 0;
+}
+/* 标签页样式 */
+.form-tabs {
+    margin-bottom: 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+    color: var(--accent-4);
+}
+
+.tab-button.active {
+    color: var(--accent-4);
+    border-bottom-color: var(--accent-4);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 表单网格布局 */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.form-grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-4);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* 健康指标管理样式 */
+.metrics-management {
+    margin-top: 10px;
+}
+
+.metrics-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.metrics-header h3 {
+    margin: 0;
+    color: var(--accent-4);
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.metrics-table th {
+    background: rgba(72, 219, 251, 0.1);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--accent-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metrics-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metrics-table tr:last-child td {
+    border-bottom: none;
+}
+
+.metrics-table tr:hover {
+    background: rgba(72, 219, 251, 0.05);
+}
+
+/* 无数据提示样式 */
+.no-data-message {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.no-data-message i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.no-data-message p {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+}
+
+/* 按钮样式 */
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-4);
+}
+
+.btn-edit:hover {
+    color: #ffc107;
+}
+
+.btn-delete:hover {
+    color: #dc3545;
+}
+
+/* 徽章样式 */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+
+.badge-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+/* 高亮动画 */
+@keyframes highlight {
+    0% { background-color: rgba(72, 219, 251, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.highlight {
+    animation: highlight 1s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .metrics-table {
+        font-size: 14px;
+    }
+
+    .metrics-table th,
+    .metrics-table td {
+        padding: 8px 10px;
+    }
+}
+/* 模态框修复 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    background: var(--card-bg);
+    margin: 2% auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.3s ease;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 防止模态框内容点击时关闭 */
+.modal-content {
+    pointer-events: auto;
+}
+
+/* 按钮交互反馈 */
+.btn, .btn-icon {
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:active, .btn-icon:active {
+    transform: scale(0.98);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 健康指标表格按钮样式修复 */
+.metrics-table .btn-icon {
+    margin: 0 2px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metrics-table .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* 表单提交按钮样式 */
+.modal-footer .btn {
+    min-width: 100px;
+}
+
+/* 标签页激活状态 */
+.tab-button.active {
+    position: relative;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-4);
+}
+
+/* 加载状态 */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 26, 46, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: 12px;
+}
+
+/* 错误状态 */
+.error-state {
+    border-color: #dc3545 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* 成功状态 */
+.success-state {
+    border-color: #28a745 !important;
+    background: rgba(40, 167, 69, 0.1) !important;
+}
+
+/* 响应式修复 */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 5% auto;
+        width: 95%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* 标签页样式修复 */
+.form-tabs {
+    margin-bottom: 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px 8px 0 0;
+    padding: 0 10px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    margin: 0;
+}
+
+.tab-button:hover {
+    color: var(--accent-4);
+    background: rgba(72, 219, 251, 0.05);
+}
+
+.tab-button.active {
+    color: var(--accent-4);
+    border-bottom-color: var(--accent-4);
+    background: rgba(72, 219, 251, 0.1);
+}
+
+.tab-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(72, 219, 251, 0.3);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+    padding: 0 5px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 标签页内容区域样式 */
+.tab-content .form-grid {
+    padding: 10px 0;
+}
+
+.tab-content .metrics-management {
+    padding: 10px 0;
+}
+
+/* 健康指标管理头部 */
+.metrics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metrics-header h3 {
+    margin: 0;
+    color: var(--accent-4);
+    font-size: 18px;
+}
+
+/* 标签页响应式设计 */
+@media (max-width: 768px) {
+    .tab-buttons {
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+
+    .tab-button {
+        flex: 1;
+        min-width: 120px;
+        padding: 10px 15px;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .metrics-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .metrics-header h3 {
+        text-align: center;
+    }
+}
+
+/* 标签页内容动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 确保模态框内容正确显示 */
+.modal-body {
+    padding: 20px;
+}
+
+/* 修复表单组在标签页内的显示 */
+.tab-content .form-group {
+    margin-bottom: 20px;
+}
+
+.tab-content .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.tab-content .form-group input,
+.tab-content .form-group select,
+.tab-content .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.tab-content .form-group input:focus,
+.tab-content .form-group select:focus,
+.tab-content .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-4);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 2px rgba(72, 219, 251, 0.2);
+}
+
+/* 健康指标表格在标签页内的样式 */
+.tab-content .metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tab-content .metrics-table th {
+    background: rgba(72, 219, 251, 0.1);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--accent-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+}
+
+.tab-content .metrics-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+}
+
+.tab-content .metrics-table tr:last-child td {
+    border-bottom: none;
+}
+
+.tab-content .metrics-table tr:hover {
+    background: rgba(72, 219, 251, 0.05);
+}
+
+/* 无数据提示在标签页内的样式 */
+.tab-content .no-data-message {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+}
+
+.tab-content .no-data-message i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.tab-content .no-data-message p {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+}
+
+/* 确保全宽表单组正确显示 */
+.tab-content .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* 文本区域在标签页内的样式 */
+.tab-content .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+/* 修复模态框尺寸和布局 */
+.modal-content {
+    position: relative;
+    background: var(--card-bg);
+    margin: 2% auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow: hidden;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.modal-content.large-modal {
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--accent-4);
+    font-size: 1.5rem;
+}
+
+.modal-body {
+    padding: 25px 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+/* 标签页样式修复 */
+.form-tabs {
+    margin-bottom: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px 8px 0 0;
+    padding: 0 10px;
+    flex-shrink: 0;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    margin: 0;
+}
+
+.tab-button:hover {
+    color: var(--accent-4);
+    background: rgba(72, 219, 251, 0.05);
+}
+
+.tab-button.active {
+    color: var(--accent-4);
+    border-bottom-color: var(--accent-4);
+    background: rgba(72, 219, 251, 0.1);
+}
+
+.tab-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 表单网格布局优化 */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    height: 100%;
+}
+
+.form-grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-4);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 2px rgba(72, 219, 251, 0.2);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* 健康指标管理样式优化 */
+.metrics-management {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.metrics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.metrics-header h3 {
+    margin: 0;
+    color: var(--accent-4);
+    font-size: 18px;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    flex: 1;
+}
+
+.metrics-table th {
+    background: rgba(72, 219, 251, 0.1);
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--accent-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.metrics-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+}
+
+.metrics-table tr:last-child td {
+    border-bottom: none;
+}
+
+.metrics-table tr:hover {
+    background: rgba(72, 219, 251, 0.05);
+}
+
+/* 按钮样式优化 */
+.btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--accent-4);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--accent-3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(72, 219, 251, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.btn-edit:hover {
+    color: #ffc107;
+}
+
+.btn-delete:hover {
+    color: #dc3545;
+}
+
+/* 无数据提示样式 */
+.no-data-message {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+    flex: 1;
+}
+
+.no-data-message i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.no-data-message p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+}
+
+/* 徽章样式 */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.badge-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .modal-content.large-modal {
+        width: 98%;
+        margin: 1% auto;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+    }
+
+    .modal-content.large-modal {
+        width: 98%;
+        height: 95vh;
+    }
+
+    .modal-body {
+        padding: 15px 20px;
+    }
+
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+
+    .tab-button {
+        flex: 1;
+        min-width: 120px;
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metrics-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

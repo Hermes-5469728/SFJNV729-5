@@ -1,0 +1,49 @@
+=== INFECTION MAP ===
+
+G1 (governance_passed hardcoded) → 影响域:
+  - ac_server.py /dispatch → 所有响应 governance_passed = true
+  - 下游: ac_bus.py TASK_COMPLETED 事件标记为通过
+  - 下游: 对话端收到的永远是"治理通过"
+
+G2 (SubAgent dead code) → 影响域:
+  - ac_server.py 两个废弃函数作为活文档残留
+  - 不被调用但混淆审计
+
+G3 (UnifiedDispatcher SubAgent) → 影响域:
+  - unified_dispatcher.py: dispatch() 分流 code/arch/doc 到 SubAgent
+  - 绕过了 ac.core.dispatch 的 E/D/S/Q 完整流水线
+  - 治理回退返回 passed=true
+
+G4 (simulated dispatch in orchestrator) → 影响域:
+  - orchestrator.py: Orchestrator._execute_step() → _simulate_dispatch()
+  - workflow/stream_b_orchestrator.py: stream_b_process() → Orchestrator.orchestrate()
+  - 所有流 B 的多步编排都是模拟执行，无真实 AC dispatch
+
+G5 (save_truth direct SQL) → 影响域:
+  - db.py: save_truth() 被多处调用（cli.py、seed.py 等）
+  - 写入 ac_truth 表不经过任何验证链
+  - tools/_store_truth.py 直接硬编码 INSERT
+
+G6 (no LEGITIMATE_SENDERS) → 影响域:
+  - ac_bus.py: publish() 接受任何 source 参数
+  - 任何模块可以发布 GOVERNANCE_PASSED、TRUTH_STORED 等事件
+
+G7 (ACAdapter direct LLM call) → 影响域:
+  - projects/sdk/adapters/ac_adapter.py: router_dispatch 直接调 DeepSeek/Qwen API
+  - 完全不经过 AC 治理管道
+  - 被 projects/sdk/interface/ac.py 等上层调用
+
+G8 (DualTrackRouter shadow system) → 影响域:
+  - projects/PersonalDataCenter/sdk/dual_track_router.py: dispatch()
+  - projects/PersonalDataCenter/sdk/app.py: POST /track/{track_type}/route/{path}
+  - 独立的路由系统，有自己的中间件+权限层
+  - 完全独立于 AC
+
+G9 (GaiaDefensePipeline) → 影响域:
+  - projects/src/api_main.py: POST /defense/process
+  - 使用简化防御而非 AC 完整治理
+  - 关键词匹配防御，无幻觉审计
+
+PHANTOM:
+  - guard.store_truth() 不存在 → 任何调用都会抛 AttributeError
+  - 文档声称的功能不存在

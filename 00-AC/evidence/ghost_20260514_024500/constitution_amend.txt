@@ -1,0 +1,52 @@
+=== 宪法修正 · 2026-05-14 猎鬼行动 ===
+
+## 新增规则
+
+### R1 · 治理不可伪造
+任何 `*_server.py`、`*_dispatch.py`、`*_orchestrator.py` 中出现 `governance_passed = True`
+或 `"governance_passed": true` 硬编码，即为架构欺诈。
+治理结果必须来自 governance.pipeline() 的实际返回。
+
+### R2 · SubAgent 隔离
+所有以 ac_ 开头的核心文件（ac_server.py、ac_client.py、ac_bus.py、unified_dispatcher.py）
+不得 import 或引用 SubAgentIntegration / subagent_integration。
+SubAgent 只能作为后端执行引擎，通过 AC 治理管道调用。
+
+### R3 · 端点自声明
+所有服务端点在 /health 中必须声明后端实现，格式：
+  "backend": "ac.core.dispatch"
+并验证 callable(ac_dispatch) 确认可用。
+
+### R4 · 事件总线白名单
+ac_bus.py.publish() 必须校验 source 参数是否在 LEGITIMATE_SENDERS 白名单中。
+默认白名单：["api", "governance", "hallucination_auditor", "guard", "orchestrator"]
+
+### R5 · 知识库写入验证
+所有向 ac_truth 表的写入必须经过 validate_truth() L5 验证。
+db.py.save_truth() 必须集成验证逻辑，禁止直接 INSERT。
+
+### R6 · SDK 层不可绕过
+projects/sdk/ 中的适配器禁止直接调 LLM API。
+必须通过 AC Server 的 /dispatch 或 /governance/check 端点。
+
+### R7 · 模拟不可替代真实
+所有 `_simulate_*` 函数必须标记 @deprecated 且只能在测试中使用。
+生产路径不得使用模拟函数替代真实 AC dispatch。
+
+### R8 · 架构熔断进 CI
+tests/test_architecture_fraud.py 必须作为 CI 必过检查。
+违规直接阻断构建。
+
+## 本次猎鬼处理
+
+G1 (governance_passed hardcoded) → 修复方向: 插入实际 governance.pipeline() 调用
+G2 (SubAgent dead code) → 修复方向: 彻底删除废弃函数
+G3 (UnifiedDispatcher SubAgent) → 修复方向: 将 SubAgent 路由改为 real AC dispatch
+G4 (simulated dispatch) → 修复方向: 替换为 real ac.core.dispatch
+G5 (save_truth bypass) → 修复方向: 集成 L5 验证
+G6 (sender whitelist) → 修复方向: 添加 LEGITIMATE_SENDERS
+G7 (ACAdapter direct LLM) → 修复方向: 路由改为经过 AC Server
+G8 (DualTrackRouter) → 修复方向: 集成 AC 治理管道
+G9 (GaiaDefense) → 修复方向: 替换或升级为完整 AC 治理
+
+PHANTOM (store_truth) → 修复方向: 在 guard.py 中实现 store_truth()

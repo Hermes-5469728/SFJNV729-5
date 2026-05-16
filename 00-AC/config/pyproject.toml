@@ -1,0 +1,77 @@
+[project]
+name = "ac-platform"
+version = "1.0.0"
+description = "AC Platform - 1+N Dual-Track Architecture Clinical Decision Support System"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "AC Platform Team" }
+]
+
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "sqlalchemy>=2.0.0",
+    "pydantic>=2.0.0",
+    "python-multipart>=0.0.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.scripts]
+ac-server = "src.api_main:main"
+ac-backup = "src.utils.backup_manager:main"
+ac-docgen = "src.utils.doc_generator:main"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "A", "D", "G", "S", "TID"]
+ignore = ["E501"]
+fixable = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+exclude = ["*.pyc", "__pycache__", "*.egg-info", ".git", ".trae"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_no_return = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+pythonpath = ["."]
+
+[tool.lint-staged]
+"*.py" = ["ruff check --fix", "ruff format", "mypy --strict"]
+"*.yaml" = ["yamllint"]
+"*.yml" = ["yamllint"]
+"*.json" = ["python -m json.tool"]

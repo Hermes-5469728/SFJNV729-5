@@ -1,0 +1,24 @@
+{
+  "participants": {
+    "opencode": {
+      "status": "online",
+      "last_heartbeat": "2026-05-12T11:10:59.424083Z"
+    },
+    "trae": {
+      "status": "pending_sync",
+      "last_heartbeat": null
+    }
+  },
+  "active_tasks": [],
+  "shared_context": {
+    "current_project": "Atelier v1.0",
+    "session_goal": "状态机升级 + SDK架构设计",
+    "architecture_docs": [
+      "00-hermes/HUMAN/ARCHITECTURE-HUMAN.md",
+      "00-hermes/MATH/ARCHITECTURE-MATH.md",
+      "00-hermes/SDK/ARCHITECTURE-SDK.md"
+    ],
+    "current_message_count": 0
+  },
+  "current_message_count": 1
+}

@@ -1,0 +1,39 @@
+# nested git repos
+00-AC/projects/.trae/skills/awesome-agent-skills/
+00-AC/projects/.trae/skills/chinese-prompts/
+00-AC/projects/.trae/skills/mattpocock-skills/
+00-AC/projects/.trae/skills/career-ops/
+_code/
+
+# large binary files
+00-AC/projects/MedicalGraphRAG/vector_db/
+*.bin
+*.h5
+*.npy
+
+# databases
+*.db
+*.sqlite3
+
+# generated
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# nested repos
+ac/blog/
+ac/00-AC/projects/personal-site/
+qa/last_run.json
+
+# OS
+Desktop.ini
+
+# bridge index
+ac/tools/.obsidian_index/
+*.pkl
+
+# env
+.env
+.env.*
+!.env.example

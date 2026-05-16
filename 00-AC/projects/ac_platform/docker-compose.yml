@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ac_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ac_admin
+      POSTGRES_PASSWORD: ac_platform_2026
+      POSTGRES_DB: ac_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./seed.py:/docker-entrypoint-initdb.d/seed.py
+
+volumes:
+  pgdata:
