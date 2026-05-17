@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="双份代码、硬依赖阻塞、escalate 虚构、治理绕过——四个 P0 级问题的绝对颗粒度复盘">
+<title>架构风险复盘 — Hermes</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand">Hermes · 架构笔记</a>
+  <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">&#9788;</button></div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回文章列表</a>
+  <h1>架构风险复盘 · 12 个问题深度诊断</h1>
+  <div class="post-meta"><span>2026-05-13</span><span>&middot;</span><span>Hermes</span><span>&middot;</span><span>架构 · 复盘</span></div>
+</div>
+<div class="post-content">
+<p>按发现的时间线，以绝对颗粒度记录所有架构级问题。每个问题包含发现场景、根因、工业对应缺陷、当前影响。</p>
+<h2>P0 级（威胁生产正确性）</h2>
+<table>
+<thead><tr><th>问题</th><th>一句话解释</th></tr></thead>
+<tbody>
+<tr><td>P0-1 双份代码</td><td>同一份代码在两个目录有不同版本，跑起来用的是哪个靠运气</td></tr>
+<tr><td>P0-2 硬依赖阻塞测试</td><td>一导入模块就要加载整个包，独立测一个函数都不行</td></tr>
+<tr><td>P0-3 escalate 虚构</td><td>代码里写了"升级到编排模式"的字段，但没人监听它</td></tr>
+<tr><td>P0-4 绕过治理</td><td>写文件时不经过质量检查，等于产品出厂不质检</td></tr>
+</tbody>
+</table>
+<h3>P0-1 · 运行目录与仓库分裂（双份代码）</h3>
+<ul>
+<li><strong>发现</strong>：运行目录和 git 仓库分离。core.py dispatch 改造、validator.py L2 修复只改了一边，测试脚本在两处手动复制。</li>
+<li><strong>根因</strong>：没有明确的源码主目录，运行与开发环境未统一，无自动同步机制。</li>
+<li><strong>缺陷类型</strong>：配置漂移 / 环境不一致</li>
+<li><strong>后果</strong>：从不同目录启动会执行不同版本的代码，问题极难排查，已构成事实上的"分裂脑"。</li>
+</ul>
+<h3>P0-2 · governance/__init__.py 顶层硬依赖阻塞测试</h3>
+<ul>
+<li><strong>发现</strong>：governance/__init__.py 第 3 行 from ac.governance.checker import ... 导致任何 import governance 都触发 ac 包上下文依赖。</li>
+<li><strong>根因</strong>：包初始化时执行了重依赖导入，违反"导入应无副作用"原则。</li>
+<li><strong>缺陷类型</strong>：模块耦合 / 可测试性破坏</li>
+<li><strong>后果</strong>：测试无法独立运行，必须使用 exec() 等绕过手段，新人或 CI 环境会直接失败。</li>
+</ul>
+<h3>P0-3 · dispatch 到 orchestrator 升级通道不存在</h3>
+<ul>
+<li><strong>发现</strong>：第三关测试中添加了 escalate 字段，但 orchestrator 未监听，stream_router.py 仅为设计文档。</li>
+<li><strong>根因</strong>：契约未实现，测试中的字段是"愿望"，而非真契约。</li>
+<li><strong>缺陷类型</strong>：死代码 / 未实现接口</li>
+<li><strong>后果</strong>：无法分类的消息被静默丢弃，生产环境会直接丢失业务请求。</li>
+</ul>
+<h3>P0-4 · 对话端写文件绕过 AC 治理管道</h3>
+<ul>
+<li><strong>发现</strong>：对话端通过 Write/Edit 直接操作文件系统，全程不经 G0-G3，不触发 governance/pipeline.py。</li>
+<li><strong>根因</strong>：治理管道与对话端工具链没有集成，治理仅守卫 CLI/Web 入口。</li>
+<li><strong>缺陷类型</strong>：权限绕过 / 治理盲区</li>
+<li><strong>后果</strong>：文件内容可含幻觉、矛盾，无任何自动检查。</li>
+</ul>
+<h2>P1 级（削弱效率和智能）</h2>
+<table>
+<thead><tr><th>问题</th><th>一句话解释</th></tr></thead>
+<tbody>
+<tr><td>P1-1 知识库断裂</td><td>数据库里存了真值，但调度器查都不查它</td></tr>
+<tr><td>P1-2 auditor 未集成</td><td>幻觉检测写好了，但没接进流水线</td></tr>
+<tr><td>P1-3 SubAgent 隔离</td><td>两条 AI 通道各自跑各自的，结果不汇总</td></tr>
+<tr><td>P1-4 治理消失</td><td>发现的问题只在这个对话里有，下次 session 就忘了</td></tr>
+</tbody>
+</table>
+<h3>P1-1 · 真值知识库与核心链路完全断裂</h3>
+<ul>
+<li><strong>发现</strong>：dispatch() 不查询 ac_truth 或 ChromaDB；orchestrator VERIFY phase 不对比已有事实；HallucinationAuditor 未集成进 G3。</li>
+<li><strong>根因</strong>：知识库被设计为被动存储，没有暴露为统一知识服务。</li>
+<li><strong>后果</strong>：知识库投入产出比为零，验证无锚点，幻觉检测无事实参照。</li>
+</ul>
+<pre>输入 → store_truth() → validate_truth() L0/L2/L5 → ac_truth
+  │                                                     │
+  │                                          (缺) dispatch 不读
+  │                                          (缺) orchestrator 不对比
+  │                                          (缺) auditor 不引用
+  └─────────── 知识入库后即被遗忘 ───────────┘</pre>
+<h2>P2 级（多用户时爆发）</h2>
+<table>
+<thead><tr><th>问题</th><th>一句话解释</th></tr></thead>
+<tbody>
+<tr><td>P2-1 无 Gate</td><td>任何输入都直通核心，没人检查值不值得处理</td></tr>
+<tr><td>P2-2 无 CI/CD</td><td>测试靠手动跑，部署靠手动复制，回滚靠手动 git</td></tr>
+<tr><td>P2-3 队列不可靠</td><td>消息存在内存里，进程一崩全丢</td></tr>
+<tr><td>P2-4 模块间无协议</td><td>模块之间通信没有统一格式，全靠默契</td></tr>
+</tbody>
+</table>
+<h2>修复工具：三把刀</h2>
+<table>
+<thead><tr><th>刀</th><th>作用</th><th>比喻</th></tr></thead>
+<tbody>
+<tr><td><strong>pydeps</strong></td><td>画出模块依赖图</td><td>城市交通地图：一眼看出哪条路堵了</td></tr>
+<tr><td><strong>Event Bus</strong></td><td>统一模块间通信</td><td>海关：所有跨模块请求必须报关</td></tr>
+<tr><td><strong>Contract Test</strong></td><td>锁定接口契约</td><td>法律合同：签了就不能改</td></tr>
+</tbody>
+</table>
+<hr><p><em>节选自 ARCHITECTURE_REVIEW_2026-05-13.md</em></p>
+</div></article>
+<footer><p>&copy; 2026 Hermes · 保留所有权利</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

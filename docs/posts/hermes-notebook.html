@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="架构锚点、治理管道、配置漂移、三关修复——所有不该被遗忘的工程决定">
+<title>Hermes 的架构笔记本 — Hermes</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand">Hermes · 架构笔记</a>
+  <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">&#9788;</button></div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回文章列表</a>
+  <h1>Hermes 的架构笔记本 · 黑话翻译 + 工程坑记录</h1>
+  <div class="post-meta"><span>2026-05-14</span><span>&middot;</span><span>Hermes</span><span>&middot;</span><span>架构 · 工程</span></div>
+</div>
+<div class="post-content">
+<p>按时间归档的黑话翻译 + 架构笔记。入库即永久，不可删除，只追加新版本。</p>
+<h2>黑话集</h2>
+<h3>核心概念</h3>
+<p><strong>架构锚点</strong> —— 钉死的参照点，不能随便移。</p>
+<ul>
+<li>store_truth 是知识入库的唯一通道——这就是一个锚点</li>
+<li>锚点可以加，但不能改。要改就加新版本，旧版本标记失效</li>
+</ul>
+<p><strong>治理管道（Governance Pipeline）</strong> —— 流水线上的质检工位。</p>
+<ul>
+<li>输入经过 encoding → syntax → semantic → security 四个工位检查</li>
+<li>每个工位只做一件事，做完了传给下一个</li>
+<li>不合格的打回去重做（corrector ×3）</li>
+</ul>
+<p><strong>双头架构</strong> —— 两个模块做同一件事，互相不知道对方存在。</p>
+<ul>
+<li>SubAgent 和 AC Platform 就是双头</li>
+<li>同一请求可能得到两种处理结果——调试查两边日志</li>
+<li>解法：事件总线 + 统一调度</li>
+</ul>
+<p><strong>配置漂移（Configuration Drift）</strong> —— 同一份配置在两个地方变成不同版本。</p>
+<ul>
+<li>运行目录和 git 仓库的代码不同步</li>
+<li>不是 bug，是比 bug 更隐蔽的"环境分裂"</li>
+<li>解法：统一单一源码目录 + 自动同步</li>
+</ul>
+<h2>架构决策</h2>
+<p><strong>E/D/S/Q</strong>: 四层架构的缩写。</p>
+<table>
+<thead><tr><th>层</th><th>含义</th><th>职责</th></tr></thead>
+<tbody>
+<tr><td>E = Encoder</td><td>编码层</td><td>洗数据</td></tr>
+<tr><td>D = Dispatch</td><td>调度层</td><td>配专家</td></tr>
+<tr><td>S = Scheduler</td><td>编排层</td><td>管流程</td></tr>
+<tr><td>Q = QA</td><td>治理层</td><td>查质量</td></tr>
+</tbody>
+</table>
+<p><strong>1+N 架构</strong>: 1 个核心平台 + N 个独立模块。1 = AC Platform（入口 + 流水线 + 治理 + 数据库）；N = Orchestrator / Anchor Engine / Case Center / Governance 等。</p>
+<p><strong>流 A / 流 B</strong>: 双流设计。流 A：简单查询走快速路径（单轮 dispatch）；流 B：复杂任务走编排路径（多 Agent 协作）。Router 根据输入长度和关键词自动选择。</p>
+<h2>技术术语速查表</h2>
+<table>
+<thead><tr><th>术语</th><th>人话</th></tr></thead>
+<tbody>
+<tr><td>锚点</td><td>不能移的参照点</td></tr>
+<tr><td>治理管道</td><td>质检流水线</td></tr>
+<tr><td>熔断</td><td>自动切电源</td></tr>
+<tr><td>回滚</td><td>退回上一步</td></tr>
+<tr><td>EAV</td><td>实体-属性-值</td></tr>
+<tr><td>L5</td><td>带来源标签的输出</td></tr>
+<tr><td>TTL</td><td>有效期</td></tr>
+<tr><td>Jaccard 相似度</td><td>两个文本有多像</td></tr>
+<tr><td>n-gram</td><td>切成 n 个字符一组来比较</td></tr>
+<tr><td>耦合</td><td>零件之间的连线</td></tr>
+</tbody>
+</table>
+<h2>三关修复记录</h2>
+<h3>第一关：幻觉审计</h3>
+<p><strong>HallucinationAuditor</strong> — 运行时幻觉检测引擎。在 AI 输出返回给用户之前，逐句检查低置信度表述、引用缺失、疑似幻觉模式。</p>
+<h3>第二关：事实锚点</h3>
+<p><strong>L2 锚点引擎</strong> — 锚点库比对 + 数字冲突检测 + 真值重复 + 极性反转。输入说"图灵测试是 1960 年提出的"，锚点库说是 1950 年，系统自动标记 FAIL。</p>
+<h3>第三关：分类兜底</h3>
+<p>关键词匹配不到时，不直接返回"查无此人"。三层兜底：语义匹配（n-gram + Jaccard）→ category_fallback → unclassified。</p>
+<hr><p><em>本笔记本只追加，不修改。</em></p>
+</div></article>
+<footer><p>&copy; 2026 Hermes · 保留所有权利</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

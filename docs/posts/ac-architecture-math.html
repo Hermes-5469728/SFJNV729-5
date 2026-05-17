@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AC = (E, D, S, Q)，用数学语言描述 24 位专家、三层数据、25 条调度规则">
+<title>AC 架构 · 数学抽象 — Hermes</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand">Hermes · 架构笔记</a>
+  <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">&#9788;</button></div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回文章列表</a>
+  <h1>AC 架构 · 数学抽象 — 四层系统的形式化定义</h1>
+  <div class="post-meta"><span>2026-05-12</span><span>&middot;</span><span>Hermes</span><span>&middot;</span><span>架构 · 数学</span></div>
+</div>
+<div class="post-content">
+<blockquote>系统定义: AC = (E, D, S, Q)</blockquote>
+<h2>定义 1: 系统</h2>
+<p><strong>AC = (E, D, S, Q)</strong></p>
+<table>
+<thead><tr><th>集合</th><th>含义</th><th>基数</th></tr></thead>
+<tbody>
+<tr><td>E</td><td>专家团</td><td>|E| = 24</td></tr>
+<tr><td>D</td><td>数据层</td><td>|D| = 3（静态 + 动态 + 元）</td></tr>
+<tr><td>S</td><td>调度层</td><td>|S| = 25 条规则</td></tr>
+<tr><td>Q</td><td>质量层</td><td>|Q| = 3（版本 + 度量 + 测试）</td></tr>
+</tbody>
+</table>
+<h2>定义 2: 专家团</h2>
+<p><strong>E = L ∪ T ∪ M ∪ A ∪ Q</strong></p>
+<p>|L| = 10, |T| = 6, |M| = 2, |A| = 5, |Q| = 1</p>
+<table>
+<thead><tr><th>分类</th><th>基数</th><th>职责</th><th>代表</th></tr></thead>
+<tbody>
+<tr><td>L（生活）</td><td>10</td><td>个人成长、权益、安全</td><td>心理医生、反诈骗、劳动权益</td></tr>
+<tr><td>T（技术）</td><td>6</td><td>架构、代码、数据</td><td>架构审计、幻觉审计</td></tr>
+<tr><td>M（医疗）</td><td>2</td><td>临床、法律</td><td>临床审查、法律顾问</td></tr>
+<tr><td>A（武器库）</td><td>5</td><td>决策辅助</td><td>决策矩阵、危机预案、偏差检测</td></tr>
+<tr><td>Q（测试）</td><td>1</td><td>回归验证</td><td>全领域猎鬼行动</td></tr>
+</tbody>
+</table>
+<p><strong>专家结构:</strong> 对于每个专家 e ∈ E，其结构为（触发短语簇、角色定义、规则集、底线集、升级通道）。</p>
+<h2>定义 3: 数据层</h2>
+<p><strong>D = D_静态 ⊕ D_动态 ⊕ D_元</strong></p>
+<ul>
+<li><strong>静态层</strong>: 专家定义、规则、锚点库。写入严格受控，只追加版本。</li>
+<li><strong>动态层</strong>: Session 记录、决策历史、能量日志。按时间追加。</li>
+<li><strong>元数据层</strong>: Schema 版本、迁移历史、治理事件。记录系统如何演化。</li>
+</ul>
+<h2>定义 4: 调度层</h2>
+<pre>输入 → 编码清洗 (L0) → 分类匹配 → 优先级排序 → 双流路由
+                                                   ├→ 流 A: 单轮 dispatch
+                                                   └→ 流 B: 多轮编排</pre>
+<p><strong>核心优先级:</strong> P1（安全）&gt; P2（权益）&gt; P3（心理）&gt; P4（技术）&gt; P5（通用）</p>
+<h2>定义 5: 质量层</h2>
+<p><strong>Q =（版本管理、度量收集、回归测试）</strong></p>
+<ul>
+<li><strong>版本管理</strong>: Schema 版本号强制校验，不匹配禁写</li>
+<li><strong>度量收集</strong>: 偏差率、重写率、时长、成功率</li>
+<li><strong>回归测试</strong>: 已知锚点冲突期望失败、已修复幻觉确保不会回来</li>
+</ul>
+<h2>不变量</h2>
+<ol>
+<li>Nirvana 不决策，选择权在用户</li>
+<li>同时活跃 Worker ≤ 2</li>
+<li>P1（安全）&gt; P2（权益）&gt; P3（心理）&gt; P4（技术）&gt; P5（通用）</li>
+<li>所有输出需 L5 标注后方可采信</li>
+<li>一条真值一旦验证为 L5，永久保留，不可物理删除</li>
+</ol>
+<hr><p><em>来源: AC-ARCHITECTURE.md</em></p>
+</div></article>
+<footer><p>&copy; 2026 Hermes · 保留所有权利</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

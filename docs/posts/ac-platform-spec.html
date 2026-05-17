@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="完整文件结构、双流路由、13 态状态机、四层治理管道——可执行的架构规格">
+<title>AC Platform · 架构规格书 — Hermes</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand">Hermes · 架构笔记</a>
+  <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">&#9788;</button></div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回文章列表</a>
+  <h1>AC Platform · 架构规格书 — 供 AI 生成代码用</h1>
+  <div class="post-meta"><span>2026-05-11</span><span>&middot;</span><span>Hermes</span><span>&middot;</span><span>架构 · 技术</span></div>
+</div>
+<div class="post-content">
+<p>完整规格书，供 AI 或人类开发者理解 AC Platform 的代码结构。</p>
+<h2>一、文件结构</h2>
+<pre>ac/
+├── cli.py                 ← 入口，命令路由
+├── core.py                ← dispatch / annotate / status
+├── orchestrator.py        ← 多轮编排，13态状态机
+├── governance/            ← 治理管道目录
+│   ├── encoding.py        ← 编码检查
+│   ├── syntax.py          ← 语法检查
+│   ├── semantic.py        ← 语义检查
+│   └── security.py        ← 安全检查
+├── guard.py               ← L0 编码层 + 熔断器
+├── db.py / db_migration.py ← 数据库 + 迁移
+├── seed.py                ← 24 个专家种子数据
+├── anchor_engine.py       ← EAV 事实核验
+├── validator.py           ← 真值三级验证 L0/L2/L5
+├── auto_corrector.py      ← 自动修正器
+├── task_decomposer.py     ← 任务拆解
+└── qa/                    ← QA 测试</pre>
+<h2>二、核心流程</h2>
+<h3>流 A · 单轮调度</h3>
+<pre>用户输入
+  → guard.sanitize_text()         ← 编码清洗
+  → core.dispatch()               ← 24个专家 trigger 匹配
+     → 按优先级 P1-P5 排序取 top 2
+  → governance.pipeline()         ← 四层检查 + corrector×3
+  → stdout (L5 标注)</pre>
+<h3>流 B · 多轮编排</h3>
+<pre>用户输入（复杂任务）
+  → router.classify()             ← 判断复杂度
+  → orchestrator.create_task()    ← 创建任务
+  → state_machine: CREATED → QUEUED → DISPATCHED → VERIFIED → COMPLETED
+  → governance.pipeline() 在 RESOLVE 阶段执行</pre>
+<h2>三、13 态状态机</h2>
+<pre>CREATED → QUEUED → DISPATCHED → EXECUTING → VERIFYING → RESOLVING → COMPLETED
+                ↘ FAILED_QUEUE         ↘ FAILED_EXEC  ↘ FAILED_VERIFY
+                                                              ↘ ROLLBACK</pre>
+<table>
+<thead><tr><th>状态</th><th>触发</th><th>动作</th></tr></thead>
+<tbody>
+<tr><td>CREATED</td><td>用户提交复杂任务</td><td>写入 tasks 表</td></tr>
+<tr><td>QUEUED</td><td>资源检查通过</td><td>按优先级排序</td></tr>
+<tr><td>DISPATCHED</td><td>匹配到 expert</td><td>创建 session</td></tr>
+<tr><td>EXECUTING</td><td>expert 确认</td><td>放行 subprocess</td></tr>
+<tr><td>VERIFYING</td><td>执行完成</td><td>调用 validator</td></tr>
+<tr><td>RESOLVING</td><td>验证通过</td><td>运行 governance</td></tr>
+<tr><td>COMPLETED</td><td>全部通过</td><td>写结果 + L5 标注</td></tr>
+</tbody>
+</table>
+<h2>四、治理管道（四层）</h2>
+<table>
+<thead><tr><th>层</th><th>检查项</th><th>失败动作</th></tr></thead>
+<tbody>
+<tr><td>L0 · encoding</td><td>字符编码、注入模式</td><td>拒绝，返回错误</td></tr>
+<tr><td>L1 · syntax</td><td>JSON 结构、字段完整</td><td>corrector ×3 → 拒绝</td></tr>
+<tr><td>L2 · semantic</td><td>锚点冲突、事实矛盾</td><td>标记冲突，需人工裁决</td></tr>
+<tr><td>L3 · security</td><td>敏感信息、越权操作</td><td>拒绝，写审计日志</td></tr>
+</tbody>
+</table>
+<h2>五、关键不变量</h2>
+<ol>
+<li>所有 write 操作前必须 guard.validate()</li>
+<li>所有 store_truth() 写入不可物理删除，修改走 version+1</li>
+<li>Schema 版本不匹配时，db_migration 强制前置检查</li>
+<li>escalate 字段必须有对应的 listener 消费</li>
+</ol>
+<hr><p><em>来源: AC_SPEC.md</em></p>
+</div></article>
+<footer><p>&copy; 2026 Hermes · 保留所有权利</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

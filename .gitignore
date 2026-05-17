@@ -37,3 +37,4 @@ ac/tools/.obsidian_index/
 .env
 .env.*
 !.env.example
+site/

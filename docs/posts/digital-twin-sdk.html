@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="构建可验证、可审计、可追溯的个人 AI 分身——身份锚点、知识图谱、决策引擎">
+<title>数字孪生 SDK · 从架构到实现 — Hermes</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand">Hermes · 架构笔记</a>
+  <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">&#9788;</button></div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回文章列表</a>
+  <h1>数字孪生 SDK · 从架构到实现</h1>
+  <div class="post-meta"><span>2026-05-10</span><span>&middot;</span><span>Hermes</span><span>&middot;</span><span>架构 · 数字孪生</span></div>
+</div>
+<div class="post-content">
+<p>构建一个可验证、可审计、可追溯的个人 AI 分身系统。</p>
+
+<h2>什么是数字孪生</h2>
+<p>在 Nirvana 的语境下，<strong>数字孪生（Digital Twin）</strong> 不是指一个会说话的聊天机器人，而是一个<strong>可验证的功能等价系统</strong>：</p>
+<ul>
+<li>一份完整的知识图谱（你读过什么、信什么、为什么信）</li>
+<li>一套决策逻辑的有向图（遇到什么 → 怎么判断 → 怎么处理）</li>
+<li>一个可追溯的验证链（每个输出都能追溯到源头）</li>
+</ul>
+<p>数字孪生的目标不是"像你"，而是<strong>在可审计的条件下复现你的决策路径</strong>。</p>
+
+<h2>架构分层</h2>
+<pre>┌─────────────────────────────────┐
+│         接口层 (CLI/Web)          │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│        调度层 (Scheduler)         │
+│   13态状态机 · 双流路由 · 编排    │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│        知识层 (Knowledge)         │
+│   EAV 锚点库 · ChromaDB · 真值   │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│       治理层 (Governance)         │
+│   四层管道 · 熔断器 · 可追溯      │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│        存储层 (Storage)           │
+│   SQLite · JSON · 只追加版本     │
+└─────────────────────────────────┘</pre>
+
+<h2>核心模块</h2>
+<h3>1. 身份锚点</h3>
+<p>定义"我是谁"的不变常量：价值观排序（安全 &gt; 权益 &gt; 心理 &gt; 技术 &gt; 通用）、决策边界（自动/人工介入分界线）、知识来源信任度。</p>
+
+<h3>2. 知识图谱</h3>
+<p>以 EAV（实体-属性-值）为最小存储单元：</p>
+<pre>(布洛芬, 成人剂量, 400mg)
+(布洛芬, 最大日剂量, 1200mg)
+(布洛芬, 禁忌, 消化道溃疡活动期)</pre>
+
+<h3>3. 决策引擎</h3>
+<p>可配置的决策树：</p>
+<pre>IF 输入类型 = 医学查询
+  THEN route_to = 临床审查专家
+  THEN confidence_threshold = 0.9
+  THEN require_human_approval = (风险等级 > medium)</pre>
+
+<h3>4. 审计链</h3>
+<p>每一次决策都留下不可篡改的记录：谁做出决策、基于什么信息、在什么时间、是否经过验证。</p>
+
+<h2>实现状态</h2>
+<table>
+<thead><tr><th>模块</th><th>状态</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>接口层</td><td>✅</td><td>CLI + opencode bridge</td></tr>
+<tr><td>调度层</td><td>✅</td><td>13态状态机 + 双流路由</td></tr>
+<tr><td>知识层</td><td>🔧</td><td>EAV 锚点库已建，知识激活待完善</td></tr>
+<tr><td>治理层</td><td>✅</td><td>四层管道 + 熔断器</td></tr>
+<tr><td>存储层</td><td>✅</td><td>SQLite + 只追加版本</td></tr>
+<tr><td>审计链</td><td>⚠️</td><td>基础版本，多 Agent 审计未实现</td></tr>
+</tbody>
+</table>
+
+<h2>远期愿景</h2>
+<blockquote>
+<p>在 AI 时代，算力是公共资源，模型是商品，但<strong>一个人的数字孳生——他的知识结构、决策逻辑、价值判断——才是真正的数字资产</strong>。</p>
+<p>这个 SDK 的目标不是造一个更聪明的 AI，而是让每个人都能以可验证的方式说：<strong>"这是我的决策，不是 AI 替我决定的。"</strong></p>
+</blockquote>
+
+</div></article>
+<footer><p>&copy; 2026 Hermes · 保留所有权利</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>
