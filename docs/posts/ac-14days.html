@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14 天 · AC 开发始末</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="nav-brand-dot"></span>Blog</a>
+    <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">🌙 暗</button></div>
+  </div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回</a>
+  <div class="post-meta-row"><span class="post-date">2026-05-14</span><span class="post-tag">AC</span><span class="post-tag">回顾</span></div>
+  <h1>14 天 · AC 开发始末</h1>
+</div>
+<div class="post-content">
+
+<p>2026 年 4 月底开始写 AC Platform。14 天后，亲手把它停了。</p>
+
+<h2>为什么开始</h2>
+<p>想法很直接：AI 输出不可靠，需要一层验证。不是事后检查，是流水线式的实时质检——编码、语法、语义、安全，四道关卡，每一道都能拦截和修正。</p>
+<p>名字叫 AC Platform。23 个专家角色、13 态状态机、双流路由、EAV 锚点库、真值知识库。两周之内从零写到了能跑。</p>
+
+<h2>做了什么</h2>
+<ul>
+<li>CLI 入口 + dispatch 调度 + 四层治理管道</li>
+<li>23+1 个专家角色，按 P1-P5 优先级排序</li>
+<li>EAV（实体-属性-值）锚点引擎，事实核验</li>
+<li>ChromaDB 案例中心 + SQLite 真值库</li>
+<li>自动修正器（corrector ×3 重试）</li>
+<li>幻觉审计器（运行时逐句置信度检查）</li>
+<li>13 态编排状态机 + 双流路由</li>
+<li>协同治理层（契约检查、风险评分、资源锁）</li>
+</ul>
+
+<h2>为什么停了</h2>
+<p>第 14 天，在研究如何把幻觉审计器接进流水线的时候，突然意识到一个问题——我在做的事，别人已经做完了，而且做得更好。</p>
+<p>不是"类似"，是几乎一样的架构思路，一样的流水线设计，一样的质检-修正-重试逻辑。对方做了两年，有社区、有文档、有生产案例。</p>
+<p>我没有沮丧。反而觉得释然。这条路的尽头有人在等你——这个事实本身就是在说"你的方向是对的"。只是不需要我一个人重新走一遍了。</p>
+
+<h2>留下了什么</h2>
+<p>AC 不是没用的废代码。它是 Nirvana Platform 的工程预演：</p>
+<ul>
+<li>12 个架构级问题的深度诊断（P0-P2）被完整记录</li>
+<li>治理管道的四层结构融入了后续设计</li>
+<li>EAV 锚点引擎的思想沿用到现在的真值库</li>
+<li>13 态状态机成为编排层的参考原型</li>
+<li>最重要的一条教训：<strong>写之前先搜，搜不到再动手</strong></li>
+</ul>
+
+<h2>关于"放弃"</h2>
+<p>选择主动放弃和被迫放弃是两回事。</p>
+<p>前者是判断——我评估了现状，结论是不需要继续，于是执行这个判断。后者是无奈——我没得选。</p>
+<p>主动放弃的前提是你有选择权。而选择权来自你手里有东西——哪怕只写了 14 天，你知道自己能做出来，也知道为什么不做。</p>
+<p>这个仓库留在 GitHub 上，不是为了纪念，是为了提醒：<strong>方向对的时候跑得最快的人，不一定第一个到。有时候到的人已经在终点了。</strong></p>
+
+</div></article>
+<footer class="site-footer"><p>&copy; 2026</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>
