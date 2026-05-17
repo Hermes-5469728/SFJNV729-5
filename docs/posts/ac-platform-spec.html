@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AC Platform · 架构规格书</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="nav-brand-dot"></span>Blog</a>
+    <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">🌙 暗</button></div>
+  </div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回</a>
+  <div class="post-meta-row"><span class="post-date">2026-05-11</span><span class="post-tag">AC</span><span class="post-tag">架构</span></div>
+  <h1>AC Platform · 架构规格书</h1>
+</div>
+<div class="post-content">
+<p>供 AI 或人类开发者理解 AC Platform 的代码结构。</p>
+
+<h2>文件结构</h2>
+<pre>ac/
+├── cli.py                 ← 入口，命令路由
+├── core.py                ← dispatch / annotate / status
+├── orchestrator.py        ← 多轮编排，13态状态机
+├── governance/            ← 治理管道目录
+│   ├── encoding.py        ← 编码检查
+│   ├── syntax.py          ← 语法检查
+│   ├── semantic.py        ← 语义检查
+│   └── security.py        ← 安全检查
+├── guard.py               ← L0 编码层 + 熔断器 + 真值入库通道
+├── db.py                  ← 数据库操作
+├── db_migration.py        ← 迁移管理
+├── seed.py                ← 24 个专家种子数据
+├── anchor_engine.py       ← EAV 事实核验
+├── validator.py           ← 真值三级验证 L0/L2/L5
+├── auto_corrector.py      ← 自动修正器
+├── task_decomposer.py     ← 任务拆解
+└── qa/                    ← QA 测试</pre>
+
+<h2>核心流程</h2>
+
+<h3>流 A · 单轮调度</h3>
+<pre>用户输入
+  → guard.sanitize_text()         ← 编码清洗
+  → core.dispatch()               ← 24个专家 trigger 匹配
+     → 按优先级 P1-P5 排序取 top 2
+     → 同时检索 case_center 相似案例
+  → governance.pipeline()         ← 四层检查 + corrector×3
+  → stdout (L5 标注)</pre>
+
+<h3>流 B · 多轮编排</h3>
+<pre>用户输入
+  → guard.sanitize_text()
+  → Orchestrator.orchestrate()
+     → PLAN：拆解 PlanStep，分配 Agent
+     → EXECUTE：异步并行执行，≤2 workers
+     → VERIFY：验证 + 评分，<70 分重试
+     → RESOLVE：全部完成或回滚
+     → LOG：持久化到 task_graphs
+  → governance.pipeline()
+  → stdout</pre>
+
+<h2>数据库</h2>
+<table>
+<thead><tr><th>表</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>ac_experts</td><td>24个专家注册（id, 名称, 分类, 触发词, 优先级, 角色定义）</td></tr>
+<tr><td>ac_schedule_log</td><td>调度日志（query, 匹配专家, 响应模式）</td></tr>
+<tr><td>ac_governance_log</td><td>治理审计（通过/失败, 检查项, 修正记录, 编码事件）</td></tr>
+<tr><td>ac_truth</td><td>真值知识库（标题, 分类, 来源, 内容, 验证状态）</td></tr>
+<tr><td>task_graphs</td><td>编排任务图（状态, 计划, 指标, 共享上下文）</td></tr>
+</tbody>
+</table>
+
+<h2>治理管道</h2>
+<table>
+<thead><tr><th>层</th><th>检查项</th><th>失败动作</th></tr></thead>
+<tbody>
+<tr><td>L0 · encoding</td><td>字符编码、注入模式</td><td>拒绝，返回错误</td></tr>
+<tr><td>L1 · syntax</td><td>JSON 结构、字段完整</td><td>corrector ×3 → 拒绝</td></tr>
+<tr><td>L2 · semantic</td><td>锚点冲突、事实矛盾</td><td>标记冲突，需人工裁决</td></tr>
+<tr><td>L3 · security</td><td>敏感信息、越权操作</td><td>拒绝，写审计日志</td></tr>
+</tbody>
+</table>
+
+<h2>关键不变量</h2>
+<ol>
+<li>所有 write 操作前必须 guard.validate()</li>
+<li>store_truth() 写入不可物理删除，修改走 version+1</li>
+<li>Schema 版本不匹配时，db_migration 强制前置检查</li>
+<li>escalate 字段必须有对应的 listener 消费</li>
+<li>P1（安全）> P2（权益）> P3（心理）> P4（技术）> P5（通用）</li>
+</ol>
+
+<hr><p><em>来源: AC_SPEC.md</em></p>
+</div></article>
+<footer class="site-footer"><p>&copy; 2026</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

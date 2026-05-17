@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>架构风险复盘</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand"><span class="nav-brand-dot"></span>Blog</a>
+    <div class="nav-links"><a href="../index.html">文章</a><a href="../about.html">关于</a><button id="theme-toggle">🌙 暗</button></div>
+  </div>
+</nav>
+<article>
+<div class="post-header">
+  <a href="../index.html" class="back-link">&larr; 返回</a>
+  <div class="post-meta-row"><span class="post-date">2026-05-13</span><span class="post-tag">AC</span><span class="post-tag">复盘</span></div>
+  <h1>架构风险复盘 · 12 个问题诊断</h1>
+</div>
+<div class="post-content">
+<p>按发现的时间线记录所有架构级问题，每个包含发现场景、根因、工业对应缺陷、当前影响。</p>
+
+<h2>P0 · 威胁生产正确性</h2>
+
+<table>
+<thead><tr><th>问题</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td>P0-1 双份代码</td><td>同一份代码在两个目录有不同版本，跑哪个靠运气</td></tr>
+<tr><td>P0-2 硬依赖阻塞测试</td><td>一导入模块就加载整个包，独立测一个函数都不行</td></tr>
+<tr><td>P0-3 escalate 虚构</td><td>升级字段写了但没人监听，消息静默丢弃</td></tr>
+<tr><td>P0-4 绕过治理</td><td>Write/Edit 不经过四层质检流水线</td></tr>
+</tbody>
+</table>
+
+<h3>P0-1 · 运行目录与仓库分裂</h3>
+<ul>
+<li><strong>发现</strong>：运行目录和 git 仓库分离。core.py dispatch 改造、validator.py L2 修复只改了一边。</li>
+<li><strong>根因</strong>：没有明确的源码主目录，运行与开发环境未统一。</li>
+<li><strong>缺陷</strong>：配置漂移 / 环境不一致</li>
+<li><strong>后果</strong>：从不同目录启动执行不同版本代码，已构成"分裂脑"。</li>
+</ul>
+
+<h3>P0-2 · 顶层硬依赖阻塞测试</h3>
+<ul>
+<li><strong>发现</strong>：governance/__init__.py 第 3 行 from ac.governance.checker import ... 导致任何 import 都触发全包依赖。</li>
+<li><strong>根因</strong>：包初始化时执行重依赖导入，违反"导入应无副作用"。</li>
+<li><strong>后果</strong>：测试无法独立运行，新人或 CI 环境直接失败。</li>
+</ul>
+
+<h3>P0-3 · escalate 升级通道不存在</h3>
+<ul>
+<li><strong>发现</strong>：第三关测试中添加了 escalate 字段，但 orchestrator 未监听。</li>
+<li><strong>根因</strong>：契约未实现，测试字段是"愿望"而非真契约。</li>
+<li><strong>后果</strong>：无法分类的消息被静默丢弃，生产环境直接丢失业务请求。</li>
+</ul>
+
+<h3>P0-4 · 对话端绕过治理管道</h3>
+<ul>
+<li><strong>发现</strong>：Write/Edit 直接操作文件系统，全程不经 G0-G3。</li>
+<li><strong>根因</strong>：治理管道与对话端工具链没有集成，治理仅守卫 CLI/Web 入口。</li>
+<li><strong>后果</strong>：文件内容可含幻觉、矛盾，无任何自动检查。</li>
+</ul>
+
+<h2>P1 · 削弱效率和智能</h2>
+<table>
+<thead><tr><th>问题</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td>P1-1 知识库断裂</td><td>数据库里存了真值，调度器查都不查</td></tr>
+<tr><td>P1-2 auditor 未集成</td><td>幻觉检测写好了，没接进流水线</td></tr>
+<tr><td>P1-3 SubAgent 隔离</td><td>两条 AI 通道各自跑，结果不汇总</td></tr>
+<tr><td>P1-4 治理消失</td><td>发现的问题只在这个对话里有，下次 session 就忘了</td></tr>
+</tbody>
+</table>
+
+<h3>P1-1 · 真值知识库与核心链路断裂</h3>
+<pre>输入 → store_truth() → validate_truth() L0/L2/L5 → ac_truth
+  │                                                     │
+  │                              (缺) dispatch 不读      │
+  │                              (缺) orchestrator 不查  │
+  │                              (缺) auditor 不引用     │
+  └──────── 知识入库后即被遗忘 ──────────────────────────┘</pre>
+
+<h2>P2 · 多用户时爆发</h2>
+<table>
+<thead><tr><th>问题</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td>P2-1 无 Gate</td><td>任何输入直通核心，没人检查值不值得处理</td></tr>
+<tr><td>P2-2 无 CI/CD</td><td>测试靠手动跑，回滚靠手动 git</td></tr>
+<tr><td>P2-3 队列不可靠</td><td>消息存在内存里，进程一崩全丢</td></tr>
+<tr><td>P2-4 无协议</td><td>模块通信没有统一格式，全靠默契</td></tr>
+</tbody>
+</table>
+
+<h2>修复工具</h2>
+<table>
+<thead><tr><th>工具</th><th>作用</th></tr></thead>
+<tbody>
+<tr><td>pydeps</td><td>画出模块依赖图，一眼看出断头路</td></tr>
+<tr><td>Event Bus</td><td>统一模块间通信——海关模式</td></tr>
+<tr><td>Contract Test</td><td>锁定接口契约，签了就不能改</td></tr>
+</tbody>
+</table>
+
+<hr><p><em>来源: ARCHITECTURE_REVIEW_2026-05-13.md</em></p>
+</div></article>
+<footer class="site-footer"><p>&copy; 2026</p></footer>
+<script src="../js/main.js"></script>
+</body>
+</html>
